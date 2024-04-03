@@ -1,7 +1,7 @@
 import pygame
-from Player import Player
-from Bullet import Bullet
-from Enemy import Enemy
+from source.Player import Player
+from source.Bullet import Bullet
+from source.Enemy import Enemy
 
 from pygame.locals import (
     K_ESCAPE,
@@ -26,7 +26,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 ADDENEMY = pygame.USEREVENT + 1
 ADDBULLET = pygame.USEREVENT + 2
 pygame.time.set_timer(ADDENEMY, 1000)
-pygame.time.set_timer(ADDBULLET, 1000)
+pygame.time.set_timer(ADDBULLET, 500)
 
 # Instantiate player. Right now, this is just a rectangle.
 player = Player()
