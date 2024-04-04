@@ -144,7 +144,7 @@ class Game() :
 
                 elif event.type == ADDENEMYBULLET:
                     for enemy in violets :
-                        new_bullet = Enemy_Bullet(enemy, 1)
+                        new_bullet = Enemy_Bullet(enemy)
                         enemy_bullets.add(new_bullet)
                         all_sprites.add(new_bullet)
 

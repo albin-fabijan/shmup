@@ -1,12 +1,13 @@
 import pygame
 import random
 from .paths import Paths
+from .Enemy import Enemy
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
 FPS = 30
 
-class Violet_Enemy(pygame.sprite.Sprite):
+class Violet_Enemy(Enemy):
     def __init__(self):
         super(Violet_Enemy, self).__init__()
         self.surf = pygame.image.load(Paths().select_sprite("violet_1.png")).convert_alpha()

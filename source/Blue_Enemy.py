@@ -2,6 +2,7 @@ import pygame
 import random
 import math
 from .paths import Paths
+from .Enemy import Enemy
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
@@ -9,7 +10,7 @@ FPS = 30
 AMPLITUDE = 10
 FREQUENCY = 0.005
 
-class Blue_Enemy(pygame.sprite.Sprite):
+class Blue_Enemy(Enemy):
     def __init__(self):
         super(Blue_Enemy, self).__init__()
         self.surf = pygame.image.load(Paths().select_sprite("white_1.png")).convert_alpha()

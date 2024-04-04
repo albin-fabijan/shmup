@@ -1,13 +1,14 @@
 import pygame
 import random
 from .paths import Paths
+from .Enemy import Enemy
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
 FPS = 30
 
-class Ship(pygame.sprite.Sprite):
-    def __init__(self):
+class Ship(Enemy):
+    def __init__(self, enemies):
         super(Ship, self).__init__()
         self.surf = pygame.image.load(Paths().select_sprite("Ship.png")).convert_alpha()
         self.size = self.surf.get_size()
@@ -25,7 +26,7 @@ class Ship(pygame.sprite.Sprite):
         self.frame = 0
         self.points = 50
         self.move = True
-        self.enemies = random.randint(5, 10)
+        self.enemies = enemies
 
     def update(self, bullets):
         if (self.move) :

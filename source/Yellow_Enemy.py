@@ -1,12 +1,13 @@
 import pygame
 import random
 from .paths import Paths
+from .Enemy import Enemy
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
 FPS = 30
 
-class Yellow_Enemy(pygame.sprite.Sprite):
+class Yellow_Enemy(Enemy):
     def __init__(self):
         super(Yellow_Enemy, self).__init__()
         self.surf = pygame.image.load(Paths().select_sprite("yellow_1.png")).convert_alpha()
