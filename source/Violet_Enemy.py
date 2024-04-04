@@ -15,7 +15,7 @@ class Violet_Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(
             center=(                
                 random.randint(5, SCREEN_WIDTH-5),
-                random.randint(-100,-20),
+                220,
             )
         )
         self.speed = 2

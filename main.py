@@ -9,6 +9,7 @@ from source.Yellow_Enemy import Yellow_Enemy
 from source.Blue_Enemy import Blue_Enemy
 from source.Violet_Enemy import Violet_Enemy
 from source.Red_Enemy import Red_Enemy
+from source.Ship import Ship
 from source.Enemy_Bullet import Enemy_Bullet
 
 from pygame.locals import (
@@ -34,9 +35,11 @@ bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Create a custom event for adding a new enemy
 ADDBULLET = pygame.USEREVENT + 1
-ADDENEMY = pygame.USEREVENT + 2
-ADDENEMYBULLET = pygame.USEREVENT + 3
+ADDSHIP = pygame.USEREVENT + 2
+ADDENEMY = pygame.USEREVENT + 3
+ADDENEMYBULLET = pygame.USEREVENT + 4
 pygame.time.set_timer(ADDBULLET, 300)
+pygame.time.set_timer(ADDSHIP, 5000)
 pygame.time.set_timer(ADDENEMY, 1000)
 pygame.time.set_timer(ADDENEMYBULLET, 1500)
 
@@ -46,6 +49,7 @@ player = Player()
 # Create groups to hold enemy sprites and all sprites
 # - enemies is used for collision detection and position updates
 # - all_sprites is used for rendering
+ships = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 yellows = pygame.sprite.Group()
 violets = pygame.sprite.Group()
@@ -62,6 +66,9 @@ running = True
 
 bullets_shot = 0
 points = 0
+ship_count = 5
+enemy_count = 0
+win = False
 
 # Main loop
 while running:
@@ -76,41 +83,54 @@ while running:
         elif event.type == QUIT:
             running = False
 
+        elif event.type == ADDSHIP:
+            if (ship_count > 0) :
+                new_enemy = Ship()
+                enemies.add(new_enemy)
+                ships.add(new_enemy)
+                all_sprites.add(new_enemy)
+                ship_count -= 1
+                enemy_count += 1
+
         # Add a new enemy?
         elif event.type == ADDENEMY:
             # Create the new enemy and add it to sprite groups
-            # rand = random.randint(1,30)
-            # if (rand <= 5) :
-            #     new_enemy = White_Enemy()
-            #     enemies.add(new_enemy)
-            #     all_sprites.add(new_enemy)
-            # elif (rand <= 10) :
-            #     new_enemy = Red_Enemy()
-            #     enemies.add(new_enemy)
-            #     all_sprites.add(new_enemy)
-            # elif (rand <= 15) :
-            #     new_enemy = Yellow_Enemy()
-            #     enemies.add(new_enemy)
-            #     yellows.add(new_enemy)
-            #     all_sprites.add(new_enemy)
-            # elif (rand <= 17) :
-            #     new_enemy = Green_Enemy()
-            #     enemies.add(new_enemy)
-            #     all_sprites.add(new_enemy)
-            # elif (rand <= 19) :
-            #     new_enemy = Blue_Enemy()
-            #     enemies.add(new_enemy)
-            #     all_sprites.add(new_enemy)
-            # else :
-            #     new_enemy = Violet_Enemy()
-            #     enemies.add(new_enemy)
-            #     violets.add(new_enemy)
-            #     all_sprites.add(new_enemy)
-
-            new_enemy = Red_Enemy()
-            enemies.add(new_enemy)
-            reds.add(new_enemy)
-            all_sprites.add(new_enemy)
+            for ship in ships :
+                if (ship.enemies > 0 and not ship.move) :
+                    rand = random.randint(1,30)
+                    if (rand <= 5) :
+                        new_enemy = White_Enemy()
+                        enemies.add(new_enemy)
+                        all_sprites.add(new_enemy)
+                        enemy_count += 1
+                    elif (rand <= 10) :
+                        new_enemy = Red_Enemy()
+                        enemies.add(new_enemy)
+                        all_sprites.add(new_enemy)
+                        enemy_count += 1
+                    elif (rand <= 15) :
+                        new_enemy = Yellow_Enemy()
+                        enemies.add(new_enemy)
+                        yellows.add(new_enemy)
+                        all_sprites.add(new_enemy)
+                        enemy_count += 1
+                    elif (rand <= 17) :
+                        new_enemy = Green_Enemy()
+                        enemies.add(new_enemy)
+                        all_sprites.add(new_enemy)
+                        enemy_count += 1
+                    elif (rand <= 19) :
+                        new_enemy = Blue_Enemy()
+                        enemies.add(new_enemy)
+                        all_sprites.add(new_enemy)
+                        enemy_count += 1
+                    elif (rand <= 20) :
+                        new_enemy = Violet_Enemy()
+                        enemies.add(new_enemy)
+                        violets.add(new_enemy)
+                        all_sprites.add(new_enemy)
+                        enemy_count += 1
+                    ship.enemies -= 1
 
         elif event.type == ADDBULLET:
             # Create the new enemy and add it to sprite groups
@@ -151,6 +171,14 @@ while running:
         player.kill()
         running = False
 
+    for ship in ships :
+        if (ship.hurt) :
+            ship.health -= 1
+            ship.hurt = False
+            for bullet in bullets :
+                if (bullet.to_kill) :
+                    bullet.kill()
+
     for yellow in yellows :
         if (yellow.hurt) :
             yellow.health -= 1
@@ -181,6 +209,7 @@ while running:
         if (enemy.to_kill) :
             points += enemy.points
             enemy.kill()
+            enemy_count -= 1
             for bullet in bullets :
                 if (bullet.to_kill) :
                     bullet.kill()
@@ -189,9 +218,15 @@ while running:
         player.kill()
         running = False
 
+    if (ship_count == 0 and enemy_count == 0) :
+        player.kill()
+        win = True
+        running = False
+
     # Update the display
     pygame.display.flip()
     clock.tick(FPS)
 
 print("Bullets shot : " + str(bullets_shot))
 print("Score : " + str(points)) 
+print("You win")
