@@ -8,6 +8,7 @@ from source.Green_Enemy import Green_Enemy
 from source.Yellow_Enemy import Yellow_Enemy
 from source.Blue_Enemy import Blue_Enemy
 from source.Violet_Enemy import Violet_Enemy
+from source.Red_Enemy import Red_Enemy
 from source.Enemy_Bullet import Enemy_Bullet
 
 from pygame.locals import (
@@ -48,6 +49,7 @@ player = Player()
 enemies = pygame.sprite.Group()
 yellows = pygame.sprite.Group()
 violets = pygame.sprite.Group()
+reds = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 enemy_bullets = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
@@ -77,29 +79,38 @@ while running:
         # Add a new enemy?
         elif event.type == ADDENEMY:
             # Create the new enemy and add it to sprite groups
-            rand = random.randint(1,30)
-            if (rand <= 10) :
-                new_enemy = White_Enemy()
-                enemies.add(new_enemy)
-                all_sprites.add(new_enemy)
-            elif (rand <= 15) :
-                new_enemy = Yellow_Enemy()
-                enemies.add(new_enemy)
-                yellows.add(new_enemy)
-                all_sprites.add(new_enemy)
-            elif (rand <= 17) :
-                new_enemy = Green_Enemy()
-                enemies.add(new_enemy)
-                all_sprites.add(new_enemy)
-            elif (rand <= 19) :
-                new_enemy = Blue_Enemy()
-                enemies.add(new_enemy)
-                all_sprites.add(new_enemy)
-            else :
-                new_enemy = Violet_Enemy()
-                enemies.add(new_enemy)
-                violets.add(new_enemy)
-                all_sprites.add(new_enemy)
+            # rand = random.randint(1,30)
+            # if (rand <= 5) :
+            #     new_enemy = White_Enemy()
+            #     enemies.add(new_enemy)
+            #     all_sprites.add(new_enemy)
+            # elif (rand <= 10) :
+            #     new_enemy = Red_Enemy()
+            #     enemies.add(new_enemy)
+            #     all_sprites.add(new_enemy)
+            # elif (rand <= 15) :
+            #     new_enemy = Yellow_Enemy()
+            #     enemies.add(new_enemy)
+            #     yellows.add(new_enemy)
+            #     all_sprites.add(new_enemy)
+            # elif (rand <= 17) :
+            #     new_enemy = Green_Enemy()
+            #     enemies.add(new_enemy)
+            #     all_sprites.add(new_enemy)
+            # elif (rand <= 19) :
+            #     new_enemy = Blue_Enemy()
+            #     enemies.add(new_enemy)
+            #     all_sprites.add(new_enemy)
+            # else :
+            #     new_enemy = Violet_Enemy()
+            #     enemies.add(new_enemy)
+            #     violets.add(new_enemy)
+            #     all_sprites.add(new_enemy)
+
+            new_enemy = Red_Enemy()
+            enemies.add(new_enemy)
+            reds.add(new_enemy)
+            all_sprites.add(new_enemy)
 
         elif event.type == ADDBULLET:
             # Create the new enemy and add it to sprite groups
@@ -147,6 +158,21 @@ while running:
             for bullet in bullets :
                 if (bullet.to_kill) :
                     bullet.kill()
+
+    for red in reds :
+        if (red.to_kill) :
+            new_bullet = Bullet(red, 0)
+            bullets.add(new_bullet)
+            all_sprites.add(new_bullet)
+            new_bullet = Bullet(red, 1)
+            bullets.add(new_bullet)
+            all_sprites.add(new_bullet)
+            new_bullet = Bullet(red, 2)
+            bullets.add(new_bullet)
+            all_sprites.add(new_bullet)
+            new_bullet = Bullet(red, 3)
+            bullets.add(new_bullet)
+            all_sprites.add(new_bullet)
 
     for enemy in enemies :
         if enemy.rect.bottom > SCREEN_HEIGHT:
