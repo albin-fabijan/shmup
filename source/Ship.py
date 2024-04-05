@@ -27,6 +27,7 @@ class Ship(Enemy):
         self.points = 50
         self.move = True
         self.enemies = enemies
+        self.enemy_count = len(self.enemies)
 
     def update(self, bullets):
         if (self.move) :
