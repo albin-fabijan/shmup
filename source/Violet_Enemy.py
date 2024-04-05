@@ -25,6 +25,7 @@ class Violet_Enemy(Enemy):
         self.create_bullet = False
         self.bullets = []
         self.points = 30
+        self.won = False
 
     def update(self, bullets):
         self.create_bullet = False
@@ -34,7 +35,7 @@ class Violet_Enemy(Enemy):
         if pygame.sprite.spritecollideany(self, bullets):
             self.to_kill = True
         if self.rect.bottom > SCREEN_HEIGHT + 50:
-            self.kill()
+            self.won = True
         
         if (self.frame < 5) :
             self.surf = pygame.image.load(Paths().select_sprite("violet_1.png")).convert_alpha()

@@ -26,6 +26,7 @@ class Blue_Enemy(Enemy):
         self.to_kill = False
         self.frame = 0
         self.points = 30
+        self.won = False
 
     def update(self, bullets):
         time_elapsed = pygame.time.get_ticks()
@@ -35,7 +36,7 @@ class Blue_Enemy(Enemy):
         if pygame.sprite.spritecollideany(self, bullets):
             self.to_kill = True
         if self.rect.bottom > SCREEN_HEIGHT + 50:
-            self.kill()
+            self.won = True
         
         if (x > 0) :
             if (self.frame < 5) :

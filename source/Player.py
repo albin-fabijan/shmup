@@ -20,6 +20,9 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(SCREEN_WIDTH/2,SCREEN_HEIGHT))
         self.to_kill = False
         self.shoot = False
+        self.health = 3
+        self.hurt = False
+        self.invincible = False
 
     def update(self, pressed_keys, enemy_bullets):
         if pressed_keys[K_LEFT]:
@@ -41,4 +44,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = SCREEN_HEIGHT
 
         if pygame.sprite.spritecollideany(self, enemy_bullets):
+            self.hurt = True
+            print("damage")
+        if (self.health <= 0) :
             self.to_kill = True

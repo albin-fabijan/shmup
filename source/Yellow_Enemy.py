@@ -25,6 +25,7 @@ class Yellow_Enemy(Enemy):
         self.to_kill = False
         self.frame = 0
         self.points = 20
+        self.won = False
 
     def update(self, bullets):
         self.rect.y += self.speed
@@ -33,7 +34,7 @@ class Yellow_Enemy(Enemy):
         if (self.health <= 0):
             self.to_kill = True
         if self.rect.bottom > SCREEN_HEIGHT + 50:
-            self.kill()
+            self.won = True
         
         if (self.frame < 5) :
             self.surf = pygame.image.load(Paths().select_sprite("yellow_1.png")).convert_alpha()
