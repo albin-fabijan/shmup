@@ -1,0 +1,9 @@
+class Scene:
+    def define_rects(self):
+        ...
+
+    def input_loop(self):
+        ...
+
+    def display(self):
+        ...
