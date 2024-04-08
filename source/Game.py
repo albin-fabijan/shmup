@@ -55,6 +55,15 @@ class Game() :
 
         ship_list = []
 
+        for i in range(3) :
+            newL = ["W", "W", "W", "W"]
+            new_ship = Ship(newL)
+            ship_list.append(new_ship)
+
+        level_white = Level(ship_list)
+
+        ship_list = []
+
         for i in range(5) :
             newL = ["W", "R", "G", "Y", "B", "V"]
             new_ship = Ship(newL)
@@ -62,6 +71,7 @@ class Game() :
 
         new_level = Level(ship_list)
 
+        levels.append(level_white)
         levels.append(new_level)
 
         # Create groups to hold enemy sprites and all sprites
@@ -84,11 +94,14 @@ class Game() :
 
         bullets_shot = 0
         points = 0
+        hits = 0
         enemy_count = 0
         win = False
+        frame = 0
 
         # Main loop
         while running:
+            frame += 1
             level = None
             for l in levels :
                 if (not l.finished) :
@@ -192,6 +205,7 @@ class Game() :
             if pygame.sprite.spritecollideany(player, enemies) and not player.invincible:
                 # If so, then remove the player and stop the loop
                 player.health -= 1
+                hits += 1
                 player.hurt = False
                 player.invincible = True
 
@@ -238,6 +252,7 @@ class Game() :
                 if enemy.rect.bottom > SCREEN_HEIGHT:
                     if (not player.invincible) :
                         player.health -= 1
+                        hits += 1
                         player.hurt = False
                         player.invincible = True
                     enemy.kill()
@@ -257,6 +272,7 @@ class Game() :
                 player.hurt = False
                 if (not player.invincible) :
                     player.health -= 1
+                    hits += 1
                     player.invincible = True
                     for bullet in enemy_bullets :
                             if (bullet.to_kill) :
@@ -264,8 +280,16 @@ class Game() :
 
             if (level.ship_count == 0 and enemy_count <= 0) :
                 pygame.time.wait(1000)
-                player.kill()
                 level.finished = True
+
+            stop = True
+            for l in levels :
+                if (not l.finished) :
+                    stop = False
+
+            if (stop) :
+                player.kill()
+                win = True
                 running = False
 
             if (player.to_kill) :
@@ -277,13 +301,18 @@ class Game() :
             pygame.display.flip()
             clock.tick(FPS)
 
+        print("Score : " + str(points*10))
         print("Bullets shot : " + str(bullets_shot))
-        print("Score : " + str(points))
+        print("Hits : " + str(hits))
+        print("Time : " + str(frame))
+        final_score = (points*10) - (bullets_shot*10) - (hits*500) - frame
+        print("Final Score : " + str(final_score))
         i = 1
         win = True
         for l in levels :
             if (l.finished) :
                 print("level " + str(i) + " done")
+                i += 1
             else :
                 win = False
         if (win) :
