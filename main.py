@@ -1,3 +1,3 @@
-from source.Game import Game
+from source.Window import Window
 
-Game.run()
+Window()

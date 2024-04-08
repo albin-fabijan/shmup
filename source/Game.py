@@ -19,24 +19,18 @@ from pygame.locals import (
     QUIT,
 )
 
-# Define constants for the screen width and height
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 650
-FPS = 15
+class Game:
+    def __init__(self, window):
+        self.window = window
 
-class Game() :
-    def run() :
-        # Initialize pygame
-        clock = pygame.time.Clock()
-        pygame.init()
-
+    def run(self):
         invincibility = 2000
 
-        # Create the screen object
-        # The size is determined by the constant SCREEN_WIDTH and SCREEN_HEIGHT
-        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         bg = pygame.image.load(Paths().select_sprite("background.png"))
-        bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+        bg = pygame.transform.scale(
+                bg,
+                (self.window.SCREEN_WIDTH, self.window.SCREEN_HEIGHT)
+        )
 
         # Create a custom event for adding a new enemy
         ADDBULLET = pygame.USEREVENT + 1
@@ -186,7 +180,7 @@ class Game() :
             pressed_keys = pygame.key.get_pressed()
 
             # Fill the screen with black
-            screen.blit(bg, (0,0))
+            self.window.screen.blit(bg, (0,0))
 
             # Update the player sprite based on user keypresses
             player.update(pressed_keys, enemy_bullets)
@@ -199,7 +193,7 @@ class Game() :
 
             # Draw all sprites
             for entity in all_sprites:
-                screen.blit(entity.image, entity.rect)
+                self.window.screen.blit(entity.image, entity.rect)
 
             # Check if any enemies have collided with the player
             if pygame.sprite.spritecollideany(player, enemies) and not player.invincible:
@@ -249,7 +243,7 @@ class Game() :
                     all_sprites.add(new_bullet)
 
             for enemy in enemies :
-                if enemy.rect.bottom > SCREEN_HEIGHT:
+                if enemy.rect.bottom > self.window.SCREEN_HEIGHT:
                     if (not player.invincible) :
                         player.health -= 1
                         hits += 1
@@ -299,7 +293,7 @@ class Game() :
 
             # Update the display
             pygame.display.flip()
-            clock.tick(FPS)
+            self.window.clock.tick(self.window.FPS)
 
         print("Score : " + str(points*10))
         print("Bullets shot : " + str(bullets_shot))
