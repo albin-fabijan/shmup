@@ -1,5 +1,6 @@
 import pygame
 import random
+from .Scene import Scene
 from .Paths import Paths
 from .Player import Player
 from .Bullet import Bullet
@@ -19,295 +20,298 @@ from pygame.locals import (
     QUIT,
 )
 
-class Game:
+class Game(Scene):
     def __init__(self, window):
+        super().__init__()
         self.window = window
 
     def run(self):
-        invincibility = 2000
+        self.invincibility = 2000
 
-        bg = pygame.image.load(Paths().select_sprite("background.png"))
-        bg = pygame.transform.scale(
-                bg,
+        self.bg = pygame.image.load(Paths().select_sprite("background.png"))
+        self.bg = pygame.transform.scale(
+                self.bg,
                 (self.window.SCREEN_WIDTH, self.window.SCREEN_HEIGHT)
         )
 
         # Create a custom event for adding a new enemy
-        ADDBULLET = pygame.USEREVENT + 1
-        ADDSHIP = pygame.USEREVENT + 2
-        ADDENEMY = pygame.USEREVENT + 3
-        ADDENEMYBULLET = pygame.USEREVENT + 4
-        pygame.time.set_timer(ADDBULLET, 300)
-        pygame.time.set_timer(ADDSHIP, 5000)
-        pygame.time.set_timer(ADDENEMY, 1000)
-        pygame.time.set_timer(ADDENEMYBULLET, 1500)
+        self.ADDBULLET = pygame.USEREVENT + 1
+        self.ADDSHIP = pygame.USEREVENT + 2
+        self.ADDENEMY = pygame.USEREVENT + 3
+        self.ADDENEMYBULLET = pygame.USEREVENT + 4
+        pygame.time.set_timer(self.ADDBULLET, 300)
+        pygame.time.set_timer(self.ADDSHIP, 5000)
+        pygame.time.set_timer(self.ADDENEMY, 1000)
+        pygame.time.set_timer(self.ADDENEMYBULLET, 1500)
 
         # Instantiate player. Right now, this is just a rectangle.
-        player = Player()
+        self.player = Player()
 
-        levels = []
+        self.levels = []
 
-        ship_list = []
+        self.ship_list = []
 
         for i in range(3) :
             newL = ["W", "W", "W", "W"]
             new_ship = Ship(newL)
-            ship_list.append(new_ship)
+            self.ship_list.append(new_ship)
 
-        level_white = Level(ship_list)
+        level_white = Level(self.ship_list)
 
-        ship_list = []
+        self.ship_list = []
 
         for i in range(5) :
             newL = ["W", "R", "G", "Y", "B", "V"]
             new_ship = Ship(newL)
-            ship_list.append(new_ship)
+            self.ship_list.append(new_ship)
 
-        new_level = Level(ship_list)
+        new_level = Level(self.ship_list)
 
-        levels.append(level_white)
-        levels.append(new_level)
+        self.levels.append(level_white)
+        self.levels.append(new_level)
 
         # Create groups to hold enemy sprites and all sprites
         # - enemies is used for collision detection and position updates
         # - all_sprites is used for rendering
-        ships = pygame.sprite.Group()
-        enemies = pygame.sprite.Group()
-        yellows = pygame.sprite.Group()
-        violets = pygame.sprite.Group()
-        reds = pygame.sprite.Group()
-        bullets = pygame.sprite.Group()
-        enemy_bullets = pygame.sprite.Group()
-        player_group = pygame.sprite.Group()
-        player_group.add(player) 
-        all_sprites = pygame.sprite.Group()
-        all_sprites.add(player)
+        self.ships = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
+        self.yellows = pygame.sprite.Group()
+        self.violets = pygame.sprite.Group()
+        self.reds = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
+        self.enemy_bullets = pygame.sprite.Group()
+        self.player_group = pygame.sprite.Group()
+        self.player_group.add(self.player) 
+        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites.add(self.player)
 
         # Variable to keep the main loop running
-        running = True
+        self.running = True
 
-        bullets_shot = 0
-        points = 0
-        hits = 0
-        enemy_count = 0
-        win = False
-        frame = 0
+        self.bullets_shot = 0
+        self.points = 0
+        self.hits = 0
+        self.enemy_count = 0
+        self.win = False
+        self.frame = 0
 
         # Main loop
-        while running:
-            frame += 1
-            level = None
-            for l in levels :
+        while self.running:
+            self.frame += 1
+            self.level = None
+            for l in self.levels :
                 if (not l.finished) :
-                    level = l
+                    self.level = l
                     break
 
-            # for loop through the event queue
-            for event in pygame.event.get():
-                # Check for KEYDOWN event
-                if event.type == KEYDOWN:
-                    # If the Esc key is pressed, then exit the main loop
-                    if event.key == K_ESCAPE:
-                        running = False
-                # Check for QUIT event. If QUIT, then set running to false.
-                elif event.type == QUIT:
-                    running = False
-
-                elif event.type == ADDSHIP:
-                    if (level.ship_count > 0) :
-                        new_enemy = level.ships[-level.ship_count]
-                        enemies.add(new_enemy)
-                        ships.add(new_enemy)
-                        all_sprites.add(new_enemy)
-                        level.ship_count -= 1
-                        enemy_count += 1
-
-                # Add a new enemy?
-                elif event.type == ADDENEMY:
-                    # Create the new enemy and add it to sprite groups
-                    for ship in ships :
-                        if (ship.enemy_count > 0 and not ship.move) :
-                            letter = ship.enemies[-ship.enemy_count]
-                            if (letter == "W") :
-                                new_enemy = White_Enemy()
-                                enemies.add(new_enemy)
-                                all_sprites.add(new_enemy)
-                                enemy_count += 1
-                            elif (letter == "R") :
-                                new_enemy = Red_Enemy()
-                                enemies.add(new_enemy)
-                                all_sprites.add(new_enemy)
-                                enemy_count += 1
-                            elif (letter == "Y") :
-                                new_enemy = Yellow_Enemy()
-                                enemies.add(new_enemy)
-                                yellows.add(new_enemy)
-                                all_sprites.add(new_enemy)
-                                enemy_count += 1
-                            elif (letter == "G") :
-                                new_enemy = Green_Enemy()
-                                enemies.add(new_enemy)
-                                all_sprites.add(new_enemy)
-                                enemy_count += 1
-                            elif (letter == "B") :
-                                new_enemy = Blue_Enemy()
-                                enemies.add(new_enemy)
-                                all_sprites.add(new_enemy)
-                                enemy_count += 1
-                            elif (letter == "V") :
-                                new_enemy = Violet_Enemy()
-                                enemies.add(new_enemy)
-                                violets.add(new_enemy)
-                                all_sprites.add(new_enemy)
-                                enemy_count += 1
-                            ship.enemy_count -= 1
-
-                elif event.type == ADDBULLET:
-                    # Create the new enemy and add it to sprite groups
-                    if (player.shoot) :
-                        new_bullet = Bullet(player, 0)
-                        bullets.add(new_bullet)
-                        all_sprites.add(new_bullet)
-                        bullets_shot += 1
-
-                elif event.type == ADDENEMYBULLET:
-                    for violet in violets :
-                        new_bullet = Enemy_Bullet(violet)
-                        enemy_bullets.add(new_bullet)
-                        all_sprites.add(new_bullet)
+            self.input_loop()
 
             # Get the set of keys pressed and check for user input
             pressed_keys = pygame.key.get_pressed()
 
             # Fill the screen with black
-            self.window.screen.blit(bg, (0,0))
+            self.window.screen.blit(self.bg, (0,0))
 
             # Update the player sprite based on user keypresses
-            player.update(pressed_keys, enemy_bullets)
+            self.player.update(pressed_keys, self.enemy_bullets)
 
             # Update enemy position
-            enemies.update(bullets)
+            self.enemies.update(self.bullets)
 
-            bullets.update(enemies)
-            enemy_bullets.update(player_group)
+            self.bullets.update(self.enemies)
+            self.enemy_bullets.update(self.player_group)
 
             # Draw all sprites
-            for entity in all_sprites:
+            for entity in self.all_sprites:
                 self.window.screen.blit(entity.image, entity.rect)
 
             # Check if any enemies have collided with the player
-            if pygame.sprite.spritecollideany(player, enemies) and not player.invincible:
+            if (
+                pygame.sprite.spritecollideany(self.player, self.enemies)
+                and not self.player.invincible
+            ):
                 # If so, then remove the player and stop the loop
-                player.health -= 1
-                hits += 1
-                player.hurt = False
-                player.invincible = True
+                self.player.health -= 1
+                self.hits += 1
+                self.player.hurt = False
+                self.player.invincible = True
 
-            if (player.invincible) :
-                if (invincibility > 0) :
-                    invincibility -= 5
+            if (self.player.invincible) :
+                if (self.invincibility > 0) :
+                    self.invincibility -= 5
                 else :
-                    player.invincible = False
-                    invincibility = 2000
-                    player.hurt = False
+                    self.player.invincible = False
+                    self.invincibility = 2000
+                    self.player.hurt = False
 
-            for ship in ships :
+            for ship in self.ships :
                 if (ship.hurt) :
                     ship.health -= 1
                     ship.hurt = False
-                    for bullet in bullets :
+                    for bullet in self.bullets :
                         if (bullet.to_kill) :
                             bullet.kill()
 
-            for yellow in yellows :
+            for yellow in self.yellows :
                 if (yellow.hurt) :
                     yellow.health -= 1
                     yellow.hurt = False
-                    for bullet in bullets :
+                    for bullet in self.bullets :
                         if (bullet.to_kill) :
                             bullet.kill()
 
-            for red in reds :
+            for red in self.reds :
                 if (red.to_kill) :
-                    new_bullet = Bullet(red, 0)
-                    bullets.add(new_bullet)
-                    all_sprites.add(new_bullet)
-                    new_bullet = Bullet(red, 1)
-                    bullets.add(new_bullet)
-                    all_sprites.add(new_bullet)
-                    new_bullet = Bullet(red, 2)
-                    bullets.add(new_bullet)
-                    all_sprites.add(new_bullet)
-                    new_bullet = Bullet(red, 3)
-                    bullets.add(new_bullet)
-                    all_sprites.add(new_bullet)
+                    for i in range(0, 4):
+                        new_bullet = Bullet(red, i)
+                        self.bullets.add(new_bullet)
+                        self.all_sprites.add(new_bullet)
 
-            for enemy in enemies :
+            for enemy in self.enemies :
                 if enemy.rect.bottom > self.window.SCREEN_HEIGHT:
-                    if (not player.invincible) :
-                        player.health -= 1
-                        hits += 1
-                        player.hurt = False
-                        player.invincible = True
+                    if (not self.player.invincible) :
+                        self.player.health -= 1
+                        self.hits += 1
+                        self.player.hurt = False
+                        self.player.invincible = True
                     enemy.kill()
-                    enemy_count -= 1
+                    self.enemy_count -= 1
                 if (enemy.to_kill) :
-                    points += enemy.points
+                    self.points += enemy.points
                     enemy.kill()
-                    enemy_count -= 1
-                    for bullet in bullets :
+                    self.enemy_count -= 1
+                    for bullet in self.bullets :
                         if (bullet.to_kill) :
                             bullet.kill()
                 if (enemy.won) :
                     enemy.kill()
-                    enemy_count -= 1
+                    self.enemy_count -= 1
 
-            if (player.hurt) :
-                player.hurt = False
-                if (not player.invincible) :
-                    player.health -= 1
-                    hits += 1
-                    player.invincible = True
-                    for bullet in enemy_bullets :
+            if (self.player.hurt) :
+                self.player.hurt = False
+                if (not self.player.invincible) :
+                    self.player.health -= 1
+                    self.hits += 1
+                    self.player.invincible = True
+                    for bullet in self.enemy_bullets :
                             if (bullet.to_kill) :
                                 bullet.kill()
 
-            if (level.ship_count == 0 and enemy_count <= 0) :
+            if (self.level.ship_count == 0 and self.enemy_count <= 0) :
                 pygame.time.wait(1000)
-                level.finished = True
+                self.level.finished = True
 
-            stop = True
-            for l in levels :
+            self.stop = True
+            for l in self.levels :
                 if (not l.finished) :
-                    stop = False
+                    self.stop = False
 
-            if (stop) :
-                player.kill()
-                win = True
-                running = False
+            if (self.stop) :
+                self.player.kill()
+                self.win = True
+                self.running = False
 
-            if (player.to_kill) :
-                player.kill()
-                win = False
-                running = False
+            if (self.player.to_kill) :
+                self.player.kill()
+                self.win = False
+                self.running = False
 
             # Update the display
             pygame.display.flip()
             self.window.clock.tick(self.window.FPS)
 
-        print("Score : " + str(points*10))
-        print("Bullets shot : " + str(bullets_shot))
-        print("Hits : " + str(hits))
-        print("Time : " + str(frame))
-        final_score = (points*10) - (bullets_shot*10) - (hits*500) - frame
+        print("Score : " + str(self.points*10))
+        print("Bullets shot : " + str(self.bullets_shot))
+        print("Hits : " + str(self.hits))
+        print("Time : " + str(self.frame))
+        final_score = (
+                (self.points*10)
+                - (self.bullets_shot*10)
+                - (self.hits*500)
+                - self.frame
+        )
         print("Final Score : " + str(final_score))
-        i = 1
-        win = True
-        for l in levels :
+        self.win = True
+        for i, l in enumerate(self.levels):
             if (l.finished) :
                 print("level " + str(i) + " done")
-                i += 1
             else :
-                win = False
-        if (win) :
+                self.win = False
+        if (self.win) :
             print("You win")
+
+    def input_loop(self):
+        # for loop through the event queue
+        for event in pygame.event.get():
+            # Check for KEYDOWN event
+            if event.type == KEYDOWN:
+                # If the Esc key is pressed, then exit the main loop
+                if event.key == K_ESCAPE:
+                    self.running = False
+            # Check for QUIT event. If QUIT, then set running to false.
+            elif event.type == QUIT:
+                self.running = False
+
+            elif event.type == self.ADDSHIP:
+                if (self.level.ship_count > 0) :
+                    new_enemy = self.level.ships[-self.level.ship_count]
+                    self.enemies.add(new_enemy)
+                    self.ships.add(new_enemy)
+                    self.all_sprites.add(new_enemy)
+                    self.level.ship_count -= 1
+                    self.enemy_count += 1
+
+            # Add a new enemy?
+            elif event.type == self.ADDENEMY:
+                # Create the new enemy and add it to sprite groups
+                for ship in self.ships :
+                    if (ship.enemy_count > 0 and not ship.move) :
+                        letter = ship.enemies[-ship.enemy_count]
+                        if (letter == "W") :
+                            new_enemy = White_Enemy()
+                            self.enemies.add(new_enemy)
+                            self.all_sprites.add(new_enemy)
+                            self.enemy_count += 1
+                        elif (letter == "R") :
+                            new_enemy = Red_Enemy()
+                            self.enemies.add(new_enemy)
+                            self.all_sprites.add(new_enemy)
+                            self.enemy_count += 1
+                        elif (letter == "Y") :
+                            new_enemy = Yellow_Enemy()
+                            self.enemies.add(new_enemy)
+                            self.yellows.add(new_enemy)
+                            self.all_sprites.add(new_enemy)
+                            self.enemy_count += 1
+                        elif (letter == "G") :
+                            new_enemy = Green_Enemy()
+                            self.enemies.add(new_enemy)
+                            self.all_sprites.add(new_enemy)
+                            self.enemy_count += 1
+                        elif (letter == "B") :
+                            new_enemy = Blue_Enemy()
+                            self.enemies.add(new_enemy)
+                            self.all_sprites.add(new_enemy)
+                            self.enemy_count += 1
+                        elif (letter == "V") :
+                            new_enemy = Violet_Enemy()
+                            self.enemies.add(new_enemy)
+                            self.violets.add(new_enemy)
+                            self.all_sprites.add(new_enemy)
+                            self.enemy_count += 1
+                        ship.enemy_count -= 1
+
+            elif event.type == self.ADDBULLET:
+                # Create the new enemy and add it to sprite groups
+                if (self.player.shoot) :
+                    new_bullet = Bullet(self.player, 0)
+                    self.bullets.add(new_bullet)
+                    self.all_sprites.add(new_bullet)
+                    self.bullets_shot += 1
+
+            elif event.type == self.ADDENEMYBULLET:
+                for violet in self.violets :
+                    new_bullet = Enemy_Bullet(violet)
+                    self.enemy_bullets.add(new_bullet)
+                    self.all_sprites.add(new_bullet)
+
