@@ -3,15 +3,15 @@ import random
 from .paths import Paths
 from .Player import Player
 from .Bullet import Bullet
-from .White_Enemy import White_Enemy
-from .Green_Enemy import Green_Enemy
-from .Yellow_Enemy import Yellow_Enemy
-from .Blue_Enemy import Blue_Enemy
-from .Violet_Enemy import Violet_Enemy
-from .Red_Enemy import Red_Enemy
+from .WhiteEnemy import White_Enemy
+from .GreenEnemy import Green_Enemy
+from .YellowEnemy import Yellow_Enemy
+from .BlueEnemy import Blue_Enemy
+from .VioletEnemy import Violet_Enemy
+from .RedEnemy import Red_Enemy
 from .Ship import Ship
 from .Level import Level
-from .Enemy_Bullet import Enemy_Bullet
+from .EnemyBullet import Enemy_Bullet
 
 from pygame.locals import (
     K_ESCAPE,
