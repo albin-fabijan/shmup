@@ -1,6 +1,6 @@
 import pygame
 
-from .paths import Paths
+from .Paths import Paths
 
 from pygame.locals import (
     K_LEFT,

@@ -1,6 +1,6 @@
 import pygame
 import random
-from .paths import Paths
+from .Paths import Paths
 from .Player import Player
 from .Bullet import Bullet
 from .WhiteEnemy import White_Enemy

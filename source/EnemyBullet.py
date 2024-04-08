@@ -1,5 +1,5 @@
 import pygame
-from .paths import Paths
+from .Paths import Paths
 
 class Enemy_Bullet(pygame.sprite.Sprite):
     def __init__(self, player):

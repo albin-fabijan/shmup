@@ -1,7 +1,7 @@
 import pygame
 import random
 import math
-from .paths import Paths
+from .Paths import Paths
 from .Enemy import Enemy
 
 SCREEN_WIDTH = 1000

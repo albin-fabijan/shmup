@@ -1,6 +1,6 @@
 import pygame
 import random
-from .paths import Paths
+from .Paths import Paths
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
