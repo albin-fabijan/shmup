@@ -9,7 +9,7 @@ FPS = 30
 
 class Yellow_Enemy(Enemy):
     def __init__(self):
-        super(Yellow_Enemy, self).__init__()
+        super().__init__(1, 20)
         self.surf = pygame.image.load(Paths().select_sprite("yellow_1.png")).convert_alpha()
         self.size = self.surf.get_size()
         self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
@@ -19,12 +19,9 @@ class Yellow_Enemy(Enemy):
                 220,
             )
         )
-        self.speed = 1
         self.health = 3
         self.hurt = False
         self.to_kill = False
-        self.frame = 0
-        self.points = 20
         self.won = False
 
     def update(self, bullets):

@@ -12,7 +12,7 @@ FREQUENCY = 0.005
 
 class Blue_Enemy(Enemy):
     def __init__(self):
-        super(Blue_Enemy, self).__init__()
+        super().__init__(2, 30)
         self.surf = pygame.image.load(Paths().select_sprite("white_1.png")).convert_alpha()
         self.size = self.surf.get_size()
         self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
@@ -22,10 +22,7 @@ class Blue_Enemy(Enemy):
                 220,
             )
         )
-        self.speed = 2
         self.to_kill = False
-        self.frame = 0
-        self.points = 30
         self.won = False
 
     def update(self, bullets):
