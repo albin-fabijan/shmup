@@ -25,7 +25,7 @@ class Game(Scene):
         super().__init__()
         self.window = window
 
-    def run(self):
+    def initialization(self):
         self.invincibility = 2000
 
         self.bg = pygame.image.load(Paths().select_sprite("background.png"))
@@ -95,6 +95,8 @@ class Game(Scene):
         self.win = False
         self.frame = 0
 
+    def run(self):
+        self.initialization()
         # Main loop
         while self.running:
             self.frame += 1
@@ -103,14 +105,12 @@ class Game(Scene):
                 if (not l.finished) :
                     self.level = l
                     break
-
+            
+            self.display()
             self.input_loop()
 
             # Get the set of keys pressed and check for user input
             pressed_keys = pygame.key.get_pressed()
-
-            # Fill the screen with black
-            self.window.screen.blit(self.bg, (0,0))
 
             # Update the player sprite based on user keypresses
             self.player.update(pressed_keys, self.enemy_bullets)
@@ -120,10 +120,6 @@ class Game(Scene):
 
             self.bullets.update(self.enemies)
             self.enemy_bullets.update(self.player_group)
-
-            # Draw all sprites
-            for entity in self.all_sprites:
-                self.window.screen.blit(entity.image, entity.rect)
 
             # Check if any enemies have collided with the player
             if (
@@ -239,6 +235,14 @@ class Game(Scene):
                 self.win = False
         if (self.win) :
             print("You win")
+
+    def display(self):
+        # Fill the screen with black
+        self.window.screen.blit(self.bg, (0,0))
+
+        # Draw all sprites
+        for entity in self.all_sprites:
+            self.window.screen.blit(entity.image, entity.rect)
 
     def input_loop(self):
         # for loop through the event queue
