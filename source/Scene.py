@@ -1,4 +1,7 @@
 class Scene:
+    def initialization(self):
+        ...
+
     def update_internal_variables(self):
         ...
 

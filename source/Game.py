@@ -95,45 +95,6 @@ class Game(Scene):
         self.win = False
         self.frame = 0
 
-    def run(self):
-        self.initialization()
-        # Main loop
-        while self.running:
-            self.update_internal_variables()
-            self.display()
-            self.event_loop()
-
-            # Update the display
-            pygame.display.flip()
-            self.window.clock.tick(self.window.FPS)
-
-        print("Score : " + str(self.points*10))
-        print("Bullets shot : " + str(self.bullets_shot))
-        print("Hits : " + str(self.hits))
-        print("Time : " + str(self.frame))
-        final_score = (
-                (self.points*10)
-                - (self.bullets_shot*10)
-                - (self.hits*500)
-                - self.frame
-        )
-        print("Final Score : " + str(final_score))
-        self.win = True
-        for i, l in enumerate(self.levels):
-            if (l.finished) :
-                print("level " + str(i) + " done")
-            else :
-                self.win = False
-        if (self.win) :
-            print("You win")
-
-    def display(self):
-        # Fill the screen with black
-        self.window.screen.blit(self.bg, (0,0))
-
-        # Draw all sprites
-        for entity in self.all_sprites:
-            self.window.screen.blit(entity.image, entity.rect)
 
     def update_internal_variables(self):
         self.frame += 1
@@ -320,3 +281,30 @@ class Game(Scene):
                     self.enemy_bullets.add(new_bullet)
                     self.all_sprites.add(new_bullet)
 
+    def display(self):
+        # Fill the screen with black
+        self.window.screen.blit(self.bg, (0,0))
+
+        # Draw all sprites
+        for entity in self.all_sprites:
+            self.window.screen.blit(entity.image, entity.rect)
+
+#       print("Score : " + str(self.points*10))
+#       print("Bullets shot : " + str(self.bullets_shot))
+#       print("Hits : " + str(self.hits))
+#       print("Time : " + str(self.frame))
+#       final_score = (
+#               (self.points*10)
+#               - (self.bullets_shot*10)
+#               - (self.hits*500)
+#               - self.frame
+#       )
+#       print("Final Score : " + str(final_score))
+#       self.win = True
+#       for i, l in enumerate(self.levels):
+#           if (l.finished) :
+#               print("level " + str(i) + " done")
+#           else :
+#               self.win = False
+#       if (self.win) :
+#           print("You win")

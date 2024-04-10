@@ -1,3 +1,4 @@
 from source.Window import Window
 
-Window()
+window = Window()
+window.run_current_scene()
