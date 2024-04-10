@@ -1,12 +1,9 @@
 class Scene:
-    def define_rects(self):
+    def update_internal_variables(self):
         ...
 
     def event_loop(self):
         ...
 
     def display(self):
-        ...
-
-    def update_internal_variables(self):
         ...
