@@ -22,32 +22,25 @@ class White_Enemy(Enemy):
         self.to_kill = False
         self.won = False
 
+        self.sprites = {
+            (0, 4): "white_1.png",
+            (5, 9): "white_2.png",
+            (10, 14): "white_1.png",
+            (15, 19): "white_3.png",
+        }
+
     def update(self, bullets):
         self.rect.y += self.speed
         if pygame.sprite.spritecollideany(self, bullets):
             self.to_kill = True
         if self.rect.bottom > SCREEN_HEIGHT + 50:
             self.won = True
-        
-        if (self.frame < 5) :
-            self.surf = pygame.image.load(Paths().select_sprite("white_1.png")).convert_alpha()
-            self.size = self.surf.get_size()
-            self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-            self.frame += 1
-        elif (self.frame < 10) :
-            self.surf = pygame.image.load(Paths().select_sprite("white_2.png")).convert_alpha()
-            self.size = self.surf.get_size()
-            self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-            self.frame += 1
-        elif (self.frame < 15) :
-            self.surf = pygame.image.load(Paths().select_sprite("white_1.png")).convert_alpha()
-            self.size = self.surf.get_size()
-            self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-            self.frame += 1
-        elif (self.frame < 20) :
-            self.surf = pygame.image.load(Paths().select_sprite("white_3.png")).convert_alpha()
-            self.size = self.surf.get_size()
-            self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-            self.frame += 1
-        else :
-            self.frame = 0
+
+        self.frame = (self.frame + 20 + 1) % 20
+
+        self.surf = self.change_sprite_depending_on_frame(self.sprites) 
+        self.size = self.surf.get_size()
+        self.image = pygame.transform.scale(
+            self.surf,
+            (int(self.size[0]*2), int(self.size[1]*2))
+        )

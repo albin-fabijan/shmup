@@ -1,6 +1,8 @@
-import pygame
-import random
 import math
+import random
+
+import pygame
+
 from .Paths import Paths
 from .Enemy import Enemy
 
@@ -13,7 +15,7 @@ FREQUENCY = 0.005
 class Blue_Enemy(Enemy):
     def __init__(self):
         super().__init__(2, 30)
-        self.surf = pygame.image.load(Paths().select_sprite("white_1.png")).convert_alpha()
+        self.surf = pygame.image.load(Paths().select_sprite("blue_1_right.png")).convert_alpha()
         self.size = self.surf.get_size()
         self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
         self.rect = self.image.get_rect(
@@ -25,6 +27,13 @@ class Blue_Enemy(Enemy):
         self.to_kill = False
         self.won = False
 
+        self.sprites = {
+            (0, 4): "blue_1",
+            (5, 9): "blue_2",
+            (10, 14): "blue_1",
+            (15, 19): "blue_3",
+        }
+
     def update(self, bullets):
         time_elapsed = pygame.time.get_ticks()
         self.rect.y += self.speed
@@ -34,50 +43,27 @@ class Blue_Enemy(Enemy):
             self.to_kill = True
         if self.rect.bottom > SCREEN_HEIGHT + 50:
             self.won = True
-        
-        if (x > 0) :
-            if (self.frame < 5) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_right_1.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            elif (self.frame < 10) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_right_2.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            elif (self.frame < 15) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_right_1.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            elif (self.frame < 20) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_right_3.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            else :
-                self.frame = 0
-        else :
-            if (self.frame < 5) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_left_1.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            elif (self.frame < 10) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_left_2.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            elif (self.frame < 15) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_left_1.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            elif (self.frame < 20) :
-                self.surf = pygame.image.load(Paths().select_sprite("blue_left_3.png")).convert_alpha()
-                self.size = self.surf.get_size()
-                self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
-                self.frame += 1
-            else :
-                self.frame = 0
+
+        self.frame = (self.frame + 20 + 1) % 20
+
+        if x > 0:
+            direction = "_right.png"
+        else:
+            direction = "_left.png"
+
+        self.surf = self.change_sprite_depending_on_frame(
+            self.sprites,
+            direction
+        )
+        self.size = self.surf.get_size()
+        self.image = pygame.transform.scale(
+            self.surf,
+            (int(self.size[0]*2), int(self.size[1]*2))
+        )
+
+    def change_sprite_depending_on_frame(self, sprites, direction):
+        for frame_range, sprite in sprites.items():
+            if frame_range[0] <= self.frame <= frame_range[1]:
+                return pygame.image.load(
+                        Paths().select_sprite(sprite + direction)
+                ).convert_alpha()
