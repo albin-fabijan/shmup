@@ -99,118 +99,9 @@ class Game(Scene):
         self.initialization()
         # Main loop
         while self.running:
-            self.frame += 1
-            self.level = None
-            for l in self.levels :
-                if (not l.finished) :
-                    self.level = l
-                    break
-            
+            self.update_internal_variables()
             self.display()
-            self.input_loop()
-
-            # Get the set of keys pressed and check for user input
-            pressed_keys = pygame.key.get_pressed()
-
-            # Update the player sprite based on user keypresses
-            self.player.update(pressed_keys, self.enemy_bullets)
-
-            # Update enemy position
-            self.enemies.update(self.bullets)
-
-            self.bullets.update(self.enemies)
-            self.enemy_bullets.update(self.player_group)
-
-            # Check if any enemies have collided with the player
-            if (
-                pygame.sprite.spritecollideany(self.player, self.enemies)
-                and not self.player.invincible
-            ):
-                # If so, then remove the player and stop the loop
-                self.player.health -= 1
-                self.hits += 1
-                self.player.hurt = False
-                self.player.invincible = True
-
-            if (self.player.invincible) :
-                if (self.invincibility > 0) :
-                    self.invincibility -= 5
-                else :
-                    self.player.invincible = False
-                    self.invincibility = 2000
-                    self.player.hurt = False
-
-            for ship in self.ships :
-                if (ship.hurt) :
-                    ship.health -= 1
-                    ship.hurt = False
-                    for bullet in self.bullets :
-                        if (bullet.to_kill) :
-                            bullet.kill()
-
-            for yellow in self.yellows :
-                if (yellow.hurt) :
-                    yellow.health -= 1
-                    yellow.hurt = False
-                    for bullet in self.bullets :
-                        if (bullet.to_kill) :
-                            bullet.kill()
-
-            for red in self.reds :
-                if (red.to_kill) :
-                    for i in range(0, 4):
-                        new_bullet = Bullet(red, i)
-                        self.bullets.add(new_bullet)
-                        self.all_sprites.add(new_bullet)
-
-            for enemy in self.enemies :
-                if enemy.rect.bottom > self.window.SCREEN_HEIGHT:
-                    if (not self.player.invincible) :
-                        self.player.health -= 1
-                        self.hits += 1
-                        self.player.hurt = False
-                        self.player.invincible = True
-                    enemy.kill()
-                    self.enemy_count -= 1
-                if (enemy.to_kill) :
-                    self.points += enemy.points
-                    enemy.kill()
-                    self.enemy_count -= 1
-                    for bullet in self.bullets :
-                        if (bullet.to_kill) :
-                            bullet.kill()
-                if (enemy.won) :
-                    enemy.kill()
-                    self.enemy_count -= 1
-
-            if (self.player.hurt) :
-                self.player.hurt = False
-                if (not self.player.invincible) :
-                    self.player.health -= 1
-                    self.hits += 1
-                    self.player.invincible = True
-                    for bullet in self.enemy_bullets :
-                            if (bullet.to_kill) :
-                                bullet.kill()
-
-            if (self.level.ship_count == 0 and self.enemy_count <= 0) :
-                pygame.time.wait(1000)
-                self.level.finished = True
-
-            self.stop = True
-            for l in self.levels :
-                if (not l.finished) :
-                    self.stop = False
-
-            if (self.stop) :
-                self.player.kill()
-                self.win = True
-                self.running = False
-
-            if (self.player.to_kill) :
-                self.player.kill()
-                self.win = False
-                self.running = False
+            self.event_loop()
 
             # Update the display
             pygame.display.flip()
@@ -244,7 +135,117 @@ class Game(Scene):
         for entity in self.all_sprites:
             self.window.screen.blit(entity.image, entity.rect)
 
-    def input_loop(self):
+    def update_internal_variables(self):
+        self.frame += 1
+        self.level = None
+        for l in self.levels :
+            if (not l.finished) :
+                self.level = l
+                break
+        # Get the set of keys pressed and check for user input
+        pressed_keys = pygame.key.get_pressed()
+
+        # Update the player sprite based on user keypresses
+        self.player.update(pressed_keys, self.enemy_bullets)
+
+        # Update enemy position
+        self.enemies.update(self.bullets)
+
+        self.bullets.update(self.enemies)
+        self.enemy_bullets.update(self.player_group)
+
+        # Check if any enemies have collided with the player
+        if (
+            pygame.sprite.spritecollideany(self.player, self.enemies)
+            and not self.player.invincible
+        ):
+            # If so, then remove the player and stop the loop
+            self.player.health -= 1
+            self.hits += 1
+            self.player.hurt = False
+            self.player.invincible = True
+
+        if (self.player.invincible) :
+            if (self.invincibility > 0) :
+                self.invincibility -= 5
+            else :
+                self.player.invincible = False
+                self.invincibility = 2000
+                self.player.hurt = False
+
+        for ship in self.ships :
+            if (ship.hurt) :
+                ship.health -= 1
+                ship.hurt = False
+                for bullet in self.bullets :
+                    if (bullet.to_kill) :
+                        bullet.kill()
+
+        for yellow in self.yellows :
+            if (yellow.hurt) :
+                yellow.health -= 1
+                yellow.hurt = False
+                for bullet in self.bullets :
+                    if (bullet.to_kill) :
+                        bullet.kill()
+
+        for red in self.reds :
+            if (red.to_kill) :
+                for i in range(0, 4):
+                    new_bullet = Bullet(red, i)
+                    self.bullets.add(new_bullet)
+                    self.all_sprites.add(new_bullet)
+
+        for enemy in self.enemies :
+            if enemy.rect.bottom > self.window.SCREEN_HEIGHT:
+                if (not self.player.invincible) :
+                    self.player.health -= 1
+                    self.hits += 1
+                    self.player.hurt = False
+                    self.player.invincible = True
+                enemy.kill()
+                self.enemy_count -= 1
+            if (enemy.to_kill) :
+                self.points += enemy.points
+                enemy.kill()
+                self.enemy_count -= 1
+                for bullet in self.bullets :
+                    if (bullet.to_kill) :
+                        bullet.kill()
+            if (enemy.won) :
+                enemy.kill()
+                self.enemy_count -= 1
+
+        if (self.player.hurt) :
+            self.player.hurt = False
+            if (not self.player.invincible) :
+                self.player.health -= 1
+                self.hits += 1
+                self.player.invincible = True
+                for bullet in self.enemy_bullets :
+                        if (bullet.to_kill) :
+                            bullet.kill()
+
+        if (self.level.ship_count == 0 and self.enemy_count <= 0) :
+            pygame.time.wait(1000)
+            self.level.finished = True
+
+        self.stop = True
+        for l in self.levels :
+            if (not l.finished) :
+                self.stop = False
+
+        if (self.stop) :
+            self.player.kill()
+            self.win = True
+            self.running = False
+
+        if (self.player.to_kill) :
+            self.player.kill()
+            self.win = False
+            self.running = False
+
+    def event_loop(self):
         # for loop through the event queue
         for event in pygame.event.get():
             # Check for KEYDOWN event
