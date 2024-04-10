@@ -15,4 +15,6 @@ class Window:
                 (self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
         )
 
-        Game(self).run()
+        self.current_scene = Game(self)
+
+        self.current_scene.run()
