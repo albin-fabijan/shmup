@@ -26,9 +26,9 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, pressed_keys, enemy_bullets):
         if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-20, 0)
+            self.rect.move_ip(-6, 0)
         if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(20, 0)
+            self.rect.move_ip(6, 0)
         if pressed_keys[K_SPACE]:
             self.shoot = True
         else :

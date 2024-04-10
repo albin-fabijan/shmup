@@ -6,7 +6,7 @@ class Window:
     def __init__(self):
         self.SCREEN_WIDTH = 1000
         self.SCREEN_HEIGHT = 650
-        self.FPS = 15
+        self.FPS = 60
 
         self.clock = pygame.time.Clock()
         pygame.init()
