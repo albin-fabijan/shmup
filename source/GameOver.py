@@ -19,6 +19,15 @@ class GameOver(Scene):
                 (self.window.SCREEN_WIDTH, self.window.SCREEN_HEIGHT)
         )
 
+        button_dimensions = 200
+        self.back_button = pygame.Rect(
+            (
+                self.window.SCREEN_WIDTH // 2 - (button_dimensions // 2),
+                self.window.SCREEN_HEIGHT // 2 - (button_dimensions // 2)
+            ),
+            (200, 200)
+        )
+
     def update_internal_variables(self):
         ...
 
@@ -26,9 +35,17 @@ class GameOver(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button.collidepoint(event.pos):
+                    print("button pressed")
 
     def display(self):
         if not self.running:
             return
 
         self.window.screen.blit(self.background, (0,0))
+        pygame.draw.rect(
+            self.window.screen,
+            (255, 0, 0),
+            self.back_button
+        )
