@@ -24,6 +24,7 @@ class Game(Scene):
     def __init__(self, window):
         super().__init__()
         self.window = window
+        self.initialization()
 
     def initialization(self):
         self.invincibility = 2000

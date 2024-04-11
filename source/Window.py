@@ -18,8 +18,6 @@ class Window:
         self.current_scene = Game(self)
 
     def run_current_scene(self):
-        self.current_scene.initialization()
-
         while self.current_scene.running:
             self.current_scene.update_internal_variables()
             self.current_scene.event_loop()
