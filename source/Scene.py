@@ -19,3 +19,6 @@ class Scene:
         '''Contains all display related functions such as screen-fills,
         blitting, etc...'''
         ...
+
+    def next_scene(self):
+        ...

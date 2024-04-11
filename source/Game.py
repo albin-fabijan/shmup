@@ -218,6 +218,7 @@ class Game(Scene):
             # Check for QUIT event. If QUIT, then set running to false.
             elif event.type == QUIT:
                 self.running = False
+                self.window.running
 
             elif event.type == self.ADDSHIP:
                 if (self.level.ship_count > 0) :
@@ -289,6 +290,9 @@ class Game(Scene):
         # Draw all sprites
         for entity in self.all_sprites:
             self.window.screen.blit(entity.image, entity.rect)
+
+    def next_scene(self):
+        return "GameOver"
 
 #       print("Score : " + str(self.points*10))
 #       print("Bullets shot : " + str(self.bullets_shot))

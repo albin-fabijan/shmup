@@ -35,9 +35,10 @@ class GameOver(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+                self.window.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.back_button.collidepoint(event.pos):
-                    print("button pressed")
+                    self.running = False
 
     def display(self):
         if not self.running:
@@ -49,3 +50,6 @@ class GameOver(Scene):
             (255, 0, 0),
             self.back_button
         )
+
+    def next_scene(self):
+        return "Game"
