@@ -1,6 +1,7 @@
 import pygame
 
 from .Game import Game
+from .GameOver import GameOver
 
 class Window:
     def __init__(self):
@@ -15,7 +16,7 @@ class Window:
                 (self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
         )
 
-        self.current_scene = Game(self)
+        self.current_scene = GameOver(self)
 
     def run_current_scene(self):
         while self.current_scene.running:
