@@ -1,5 +1,6 @@
 import pygame
 
+from .Paths import Paths
 from .Scene import Scene
 
 class GameOver(Scene):
@@ -10,33 +11,24 @@ class GameOver(Scene):
 
     def initialization(self):
         self.running = True
-        self.background_red = 192
-        self.background_green = 0
-
-    def update_internal_variables(self):
-        self.background_green = (
-            (self.background_green + 256 + 1) % 256
+        self.background = pygame.image.load(
+            Paths().select_sprite("background-menu.png")
+        )
+        self.background = pygame.transform.scale(
+                self.background,
+                (self.window.SCREEN_WIDTH, self.window.SCREEN_HEIGHT)
         )
 
-    def event_loop(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
-            print("up")
-            self.background_red = (
-                (self.background_red + 256 + 1) % 256
-            )
-        elif keys[pygame.K_DOWN]:
-            print("down")
-            self.background_red = (
-                (self.background_red + 256 - 1) % 256
-            )
+    def update_internal_variables(self):
+        ...
 
+    def event_loop(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
-
     def display(self):
-        self.window.screen.fill(
-            (self.background_red, self.background_green, 0)
-        )
+        if not self.running:
+            return
+
+        self.window.screen.blit(self.background, (0,0))

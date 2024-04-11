@@ -24,5 +24,8 @@ class Window:
             self.current_scene.event_loop()
             self.current_scene.display()
 
+            if not self.current_scene.running:
+                break
+
             pygame.display.flip()
             self.clock.tick(60) 
