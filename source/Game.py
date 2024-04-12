@@ -264,7 +264,12 @@ class Game(Scene):
             elif event.type == self.ADDBULLET:
                 # Create the new enemy and add it to sprite groups
                 if (self.player.shoot) :
-                    new_bullet = Bullet(self.player, 0)
+                    new_bullet = Bullet(
+                        self.player,
+                        0,
+                        self.bullet_size_multiplier,
+                        self.bullet_speed_multiplier,
+                    )
                     self.bullets.add(new_bullet)
                     self.all_sprites.add(new_bullet)
                     self.bullets_shot += 1

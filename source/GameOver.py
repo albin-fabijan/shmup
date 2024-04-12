@@ -74,6 +74,6 @@ class GameOver(Scene):
             "boat_number": 4,
             "enemy_types": ["W", "B", "Y"],
             "bullet_fire_rate_divisor": 2,
-            "bullet_size_multiplier": 1.2,
-            "bullet_speed_multiplier": 1.2,
+            "bullet_size_multiplier": 1,
+            "bullet_speed_multiplier": 2,
         }
