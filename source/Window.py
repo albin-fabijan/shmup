@@ -23,7 +23,10 @@ class Window:
         self.current_scene = Game(
             self,
             3,
-            ["W", "W", "W", "W"]
+            ["W", "W", "W", "W"],
+            1,
+            1,
+            1,
         )
 
     def run_current_scene(self):
@@ -44,8 +47,11 @@ class Window:
                 case "Game":
                     self.current_scene = Game(
                             self,
-                            3,
-                            ["W", "W", "W", "W"]
+                            next_scene["boat_number"],
+                            next_scene["enemy_types"],
+                            next_scene["bullet_fire_rate_divisor"],
+                            next_scene["bullet_size_multiplier"],
+                            next_scene["bullet_speed_multiplier"],
                     )
                 case "GameOver":
                     self.current_scene = GameOver(self, next_scene["score"])

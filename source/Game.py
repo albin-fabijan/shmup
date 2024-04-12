@@ -21,7 +21,15 @@ from pygame.locals import (
 )
 
 class Game(Scene):
-    def __init__(self, window, boat_number, enemy_types):
+    def __init__(
+        self,
+        window,
+        boat_number,
+        enemy_types,
+        bullet_fire_rate_divisor,
+        bullet_size_multiplier,
+        bullet_speed_multiplier,
+    ):
         super().__init__()
         self.window = window
         self.boat_number = boat_number
