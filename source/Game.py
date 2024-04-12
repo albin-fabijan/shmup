@@ -21,9 +21,11 @@ from pygame.locals import (
 )
 
 class Game(Scene):
-    def __init__(self, window):
+    def __init__(self, window, boat_number, enemy_types):
         super().__init__()
         self.window = window
+        self.boat_number = boat_number
+        self.enemy_types = enemy_types
         self.initialization()
 
     def initialization(self):
@@ -48,28 +50,13 @@ class Game(Scene):
         # Instantiate player. Right now, this is just a rectangle.
         self.player = Player()
 
-        self.levels = []
-
         self.ship_list = []
-
-        for i in range(3) :
-            newL = ["W", "W", "W", "W"]
+        for i in range(self.boat_number):
+            newL = self.enemy_types
             new_ship = Ship(newL)
             self.ship_list.append(new_ship)
 
-        level_white = Level(self.ship_list)
-
-        self.ship_list = []
-
-        for i in range(5) :
-            newL = ["W", "R", "G", "Y", "B", "V"]
-            new_ship = Ship(newL)
-            self.ship_list.append(new_ship)
-
-        new_level = Level(self.ship_list)
-
-        self.levels.append(level_white)
-        self.levels.append(new_level)
+        self.level = Level(self.ship_list)
 
         # Create groups to hold enemy sprites and all sprites
         # - enemies is used for collision detection and position updates
@@ -99,11 +86,6 @@ class Game(Scene):
 
     def update_internal_variables(self):
         self.frame += 1
-        self.level = None
-        for l in self.levels :
-            if (not l.finished) :
-                self.level = l
-                break
         # Get the set of keys pressed and check for user input
         pressed_keys = pygame.key.get_pressed()
 
@@ -188,24 +170,15 @@ class Game(Scene):
                         if (bullet.to_kill) :
                             bullet.kill()
 
-        if (self.level.ship_count == 0 and self.enemy_count <= 0) :
-            pygame.time.wait(1000)
-            self.level.finished = True
-
-        self.stop = True
-        for l in self.levels :
-            if (not l.finished) :
-                self.stop = False
-
-        if (self.stop) :
+        if self.player.to_kill:
+            self.player.kill()
+            self.win = False
+            self.running = False
+        elif self.level_is_finished():
             self.player.kill()
             self.win = True
             self.running = False
 
-        if (self.player.to_kill) :
-            self.player.kill()
-            self.win = False
-            self.running = False
 
     def event_loop(self):
         # for loop through the event queue
@@ -304,3 +277,6 @@ class Game(Scene):
             - (self.hits*500)
             - self.frame
         )
+
+    def level_is_finished(self):
+        return self.level.ship_count == 0 and self.enemy_count <= 0

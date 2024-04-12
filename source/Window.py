@@ -20,7 +20,11 @@ class Window:
 
         self.running = True
 
-        self.current_scene = Game(self)
+        self.current_scene = Game(
+            self,
+            3,
+            ["W", "W", "W", "W"]
+        )
 
     def run_current_scene(self):
         while self.running:
@@ -38,6 +42,10 @@ class Window:
             next_scene = self.current_scene.next_scene()
             match next_scene["scene_name"]:
                 case "Game":
-                    self.current_scene = Game(self)
+                    self.current_scene = Game(
+                            self,
+                            3,
+                            ["W", "W", "W", "W"]
+                    )
                 case "GameOver":
                     self.current_scene = GameOver(self, next_scene["score"])
