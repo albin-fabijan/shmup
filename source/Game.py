@@ -42,7 +42,9 @@ class Game(Scene):
         self.ADDSHIP = pygame.USEREVENT + 2
         self.ADDENEMY = pygame.USEREVENT + 3
         self.ADDENEMYBULLET = pygame.USEREVENT + 4
-        pygame.time.set_timer(self.ADDBULLET, 300)
+
+        BASE_FIRE_RATE = 300
+        pygame.time.set_timer(self.ADDBULLET, int(BASE_FIRE_RATE * 1.0))
         pygame.time.set_timer(self.ADDSHIP, 5000)
         pygame.time.set_timer(self.ADDENEMY, 1000)
         pygame.time.set_timer(self.ADDENEMYBULLET, 1500)
