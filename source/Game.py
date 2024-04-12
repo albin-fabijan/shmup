@@ -292,24 +292,15 @@ class Game(Scene):
             self.window.screen.blit(entity.image, entity.rect)
 
     def next_scene(self):
-        return ("GameOver",)
+        return {
+            "scene_name": "GameOver",
+            "score": self.get_score(),
+        }
 
-#       print("Score : " + str(self.points*10))
-#       print("Bullets shot : " + str(self.bullets_shot))
-#       print("Hits : " + str(self.hits))
-#       print("Time : " + str(self.frame))
-#       final_score = (
-#               (self.points*10)
-#               - (self.bullets_shot*10)
-#               - (self.hits*500)
-#               - self.frame
-#       )
-#       print("Final Score : " + str(final_score))
-#       self.win = True
-#       for i, l in enumerate(self.levels):
-#           if (l.finished) :
-#               print("level " + str(i) + " done")
-#           else :
-#               self.win = False
-#       if (self.win) :
-#           print("You win")
+    def get_score(self):
+        return (
+            (self.points*10)
+            - (self.bullets_shot*10)
+            - (self.hits*500)
+            - self.frame
+        )

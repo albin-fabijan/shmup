@@ -4,12 +4,14 @@ from .Paths import Paths
 from .Scene import Scene
 
 class GameOver(Scene):
-    def __init__(self, window):
+    def __init__(self, window, score):
         super().__init__()
         self.window = window
+        self.score = score
         self.initialization()
 
     def initialization(self):
+        print(self.score)
         self.running = True
         self.background = pygame.image.load(
             Paths().select_sprite("background-menu.png")
@@ -52,4 +54,6 @@ class GameOver(Scene):
         )
 
     def next_scene(self):
-        return ("Game", )
+        return {
+            "scene_name": "Game",
+        }

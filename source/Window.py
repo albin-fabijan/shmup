@@ -36,8 +36,8 @@ class Window:
                 self.clock.tick(60) 
 
             next_scene = self.current_scene.next_scene()
-            match next_scene[0]:
+            match next_scene["scene_name"]:
                 case "Game":
                     self.current_scene = Game(self)
                 case "GameOver":
-                    self.current_scene = GameOver(self)
+                    self.current_scene = GameOver(self, next_scene["score"])
