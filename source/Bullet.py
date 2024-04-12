@@ -8,7 +8,7 @@ class Bullet(pygame.sprite.Sprite):
         self.size = self.surf.get_size()
         self.image = pygame.transform.scale(self.surf, (int(self.size[0]/2), int(self.size[1]/2)))
         self.rect = self.image.get_rect(center=(player.rect.x+10, player.rect.y))
-        self.speed = -20
+        self.speed = 20
         self.to_kill = False
         self.directions = {
             0: self._move_up,
@@ -28,13 +28,13 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
     def _move_up(self):
-        self.rect.y += self.speed
+        self.rect.y -= self.speed
 
     def _move_down(self):
-        self.rect -= self.speed
-
-    def _move_right(self):
         self.rect += self.speed
 
-    def _move_left(self):
+    def _move_right(self):
         self.rect -= self.speed
+
+    def _move_left(self):
+        self.rect += self.speed
