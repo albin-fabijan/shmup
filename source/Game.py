@@ -32,8 +32,14 @@ class Game(Scene):
     ):
         super().__init__()
         self.window = window
+
         self.boat_number = boat_number
         self.enemy_types = enemy_types
+
+        self.bullet_fire_rate_divisor = bullet_fire_rate_divisor
+        self.bullet_size_multiplier = bullet_size_multiplier
+        self.bullet_speed_multiplier = bullet_speed_multiplier
+
         self.initialization()
 
     def initialization(self):
@@ -52,7 +58,10 @@ class Game(Scene):
         self.ADDENEMYBULLET = pygame.USEREVENT + 4
 
         BASE_FIRE_RATE = 300
-        pygame.time.set_timer(self.ADDBULLET, int(BASE_FIRE_RATE * 1.0))
+        pygame.time.set_timer(
+            self.ADDBULLET,
+            int(BASE_FIRE_RATE / self.bullet_fire_rate_divisor)
+        )
         pygame.time.set_timer(self.ADDSHIP, 5000)
         pygame.time.set_timer(self.ADDENEMY, 1000)
         pygame.time.set_timer(self.ADDENEMYBULLET, 1500)
