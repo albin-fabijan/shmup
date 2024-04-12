@@ -52,4 +52,4 @@ class GameOver(Scene):
         )
 
     def next_scene(self):
-        return "Game"
+        return ("Game", )

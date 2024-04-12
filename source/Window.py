@@ -20,11 +20,7 @@ class Window:
 
         self.running = True
 
-        self.scenes = {
-            "GameOver": partial(GameOver, self),
-            "Game": partial(Game, self),
-        }
-        self.current_scene = GameOver(self)
+        self.current_scene = Game(self)
 
     def run_current_scene(self):
         while self.running:
@@ -40,7 +36,8 @@ class Window:
                 self.clock.tick(60) 
 
             next_scene = self.current_scene.next_scene()
-            for scene_key, scene_call in self.scenes.items():
-                if next_scene == scene_key:
-                    self.current_scene = scene_call()
-                    break
+            match next_scene[0]:
+                case "Game":
+                    self.current_scene = Game(self)
+                case "GameOver":
+                    self.current_scene = GameOver(self)

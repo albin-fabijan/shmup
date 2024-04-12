@@ -292,7 +292,7 @@ class Game(Scene):
             self.window.screen.blit(entity.image, entity.rect)
 
     def next_scene(self):
-        return "GameOver"
+        return ("GameOver",)
 
 #       print("Score : " + str(self.points*10))
 #       print("Bullets shot : " + str(self.bullets_shot))
