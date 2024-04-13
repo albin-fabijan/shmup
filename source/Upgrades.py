@@ -32,13 +32,27 @@ class Upgrades(Scene):
                 (self.window.SCREEN_WIDTH, self.window.SCREEN_HEIGHT)
         )
 
-        button_dimensions = 200
-        self.back_button = pygame.Rect(
+        BUTTON_DIMENSIONS = 100
+        self.fire_rate_button = pygame.Rect(
             (
-                self.window.SCREEN_WIDTH // 2 - (button_dimensions // 2),
-                self.window.SCREEN_HEIGHT * 0.66 - (button_dimensions // 2)
+                self.window.SCREEN_WIDTH * 0.33 - (BUTTON_DIMENSIONS // 2),
+                self.window.SCREEN_HEIGHT * 0.66 - (BUTTON_DIMENSIONS // 2)
             ),
-            (200, 200)
+            (BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
+        )
+        self.size_button = pygame.Rect(
+            (
+                self.window.SCREEN_WIDTH * 0.5 - (BUTTON_DIMENSIONS // 2),
+                self.window.SCREEN_HEIGHT * 0.66 - (BUTTON_DIMENSIONS // 2)
+            ),
+            (BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
+        )
+        self.speed_button = pygame.Rect(
+            (
+                self.window.SCREEN_WIDTH * 0.66 - (BUTTON_DIMENSIONS // 2),
+                self.window.SCREEN_HEIGHT * 0.66 - (BUTTON_DIMENSIONS // 2)
+            ),
+            (BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
         )
 
         self.font = pygame.font.Font(None, 48)
@@ -58,7 +72,14 @@ class Upgrades(Scene):
                 self.running = False
                 self.window.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.back_button.collidepoint(event.pos):
+                if self.fire_rate_button.collidepoint(event.pos):
+                    self.bullet_fire_rate_divisor += 0.5
+                    self.running = False
+                elif self.size_button.collidepoint(event.pos):
+                    self.bullet_size_multiplier += 0.5
+                    self.running = False
+                elif self.speed_button.collidepoint(event.pos):
+                    self.bullet_speed_multiplier += 0.5
                     self.running = False
 
     def display(self):
@@ -66,10 +87,21 @@ class Upgrades(Scene):
             return
 
         self.window.screen.blit(self.background, (0,0))
+
+        pygame.draw.rect(
+            self.window.screen,
+            (255, 0, 0),
+            self.fire_rate_button
+        )
         pygame.draw.rect(
             self.window.screen,
             (0, 255, 0),
-            self.back_button
+            self.size_button
+        )
+        pygame.draw.rect(
+            self.window.screen,
+            (0, 0, 255),
+            self.speed_button
         )
 
         self.window.screen.blit(
@@ -85,7 +117,7 @@ class Upgrades(Scene):
             "scene_name": "Game",
             "boat_number": 4,
             "enemy_types": ["W", "B", "Y"],
-            "bullet_fire_rate_divisor": self.bullet_fire_rate_divisor + 0.2,
-            "bullet_size_multiplier": self.bullet_size_multiplier + 0.2,
-            "bullet_speed_multiplier": self.bullet_size_multiplier + 0.2,
+            "bullet_fire_rate_divisor": self.bullet_fire_rate_divisor,
+            "bullet_size_multiplier": self.bullet_size_multiplier,
+            "bullet_speed_multiplier": self.bullet_speed_multiplier,
         }

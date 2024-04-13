@@ -40,6 +40,7 @@ class Game(Scene):
         self.bullet_size_multiplier = bullet_size_multiplier
         self.bullet_speed_multiplier = bullet_speed_multiplier
 
+
         self.next_scene_dict = None
 
         self.initialization()

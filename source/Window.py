@@ -27,7 +27,7 @@ class Window:
             ["W", "W", "W", "W"],
             1,
             0.5,
-            1,
+            0.5,
         )
 
     def run_current_scene(self):
