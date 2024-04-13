@@ -3,11 +3,23 @@ import pygame
 from .Paths import Paths
 from .Scene import Scene
 
-class GameOver(Scene):
-    def __init__(self, window, score):
+class Upgrades(Scene):
+    def __init__(
+        self,
+        window,
+        score,
+        bullet_fire_rate_divisor,
+        bullet_size_multiplier,
+        bullet_speed_multiplier
+    ):
         super().__init__()
+
         self.window = window
         self.score = score
+        self.bullet_fire_rate_divisor = bullet_fire_rate_divisor
+        self.bullet_size_multiplier = bullet_size_multiplier
+        self.bullet_speed_multiplier = bullet_speed_multiplier
+
         self.initialization()
 
     def initialization(self):
@@ -56,7 +68,7 @@ class GameOver(Scene):
         self.window.screen.blit(self.background, (0,0))
         pygame.draw.rect(
             self.window.screen,
-            (255, 0, 0),
+            (0, 255, 0),
             self.back_button
         )
 
@@ -73,7 +85,7 @@ class GameOver(Scene):
             "scene_name": "Game",
             "boat_number": 4,
             "enemy_types": ["W", "B", "Y"],
-            "bullet_fire_rate_divisor": 1,
-            "bullet_size_multiplier": 0.5,
-            "bullet_speed_multiplier": 1,
+            "bullet_fire_rate_divisor": self.bullet_fire_rate_divisor + 0.2,
+            "bullet_size_multiplier": self.bullet_size_multiplier + 0.2,
+            "bullet_speed_multiplier": self.bullet_size_multiplier + 0.2,
         }

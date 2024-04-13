@@ -4,6 +4,7 @@ import pygame
 
 from .Game import Game
 from .GameOver import GameOver
+from .Upgrades import Upgrades
 
 class Window:
     def __init__(self):
@@ -43,6 +44,10 @@ class Window:
                 self.clock.tick(60) 
 
             next_scene = self.current_scene.next_scene()
+            if next_scene is None:
+                self.running = False
+                break
+
             match next_scene["scene_name"]:
                 case "Game":
                     self.current_scene = Game(
@@ -55,3 +60,11 @@ class Window:
                     )
                 case "GameOver":
                     self.current_scene = GameOver(self, next_scene["score"])
+                case "Upgrades":
+                    self.current_scene = Upgrades(
+                        self,
+                        next_scene["score"],
+                        next_scene["bullet_fire_rate_divisor"],
+                        next_scene["bullet_size_multiplier"],
+                        next_scene["bullet_speed_multiplier"],
+                    )

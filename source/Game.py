@@ -40,6 +40,8 @@ class Game(Scene):
         self.bullet_size_multiplier = bullet_size_multiplier
         self.bullet_speed_multiplier = bullet_speed_multiplier
 
+        self.next_scene_dict = None
+
         self.initialization()
 
     def initialization(self):
@@ -193,10 +195,22 @@ class Game(Scene):
             self.player.kill()
             self.win = False
             self.running = False
+            self.next_scene_dict = {
+                "scene_name": "GameOver",
+                "score": self.get_score(),
+            }
+
         elif self.level_is_finished():
             self.player.kill()
             self.win = True
             self.running = False
+            self.next_scene_dict = {
+                "scene_name": "Upgrades",
+                "score": self.get_score(),
+                "bullet_fire_rate_divisor": self.bullet_fire_rate_divisor,
+                "bullet_size_multiplier": self.bullet_size_multiplier,
+                "bullet_speed_multiplier": self.bullet_speed_multiplier,
+            }
 
 
     def event_loop(self):
@@ -289,10 +303,7 @@ class Game(Scene):
             self.window.screen.blit(entity.image, entity.rect)
 
     def next_scene(self):
-        return {
-            "scene_name": "GameOver",
-            "score": self.get_score(),
-        }
+        return self.next_scene_dict
 
     def get_score(self):
         return (
