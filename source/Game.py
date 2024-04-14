@@ -205,15 +205,24 @@ class Game(Scene):
             self.player.kill()
             self.win = True
             self.running = False
-            self.next_scene_dict = {
-                "scene_name": "Upgrades",
-                "score": self.get_score(),
-                "next_level_id": self.level_id + 1,
-                "bullet_fire_rate_divisor": self.bullet_fire_rate_divisor,
-                "bullet_size_multiplier": self.bullet_size_multiplier,
-                "bullet_speed_multiplier": self.bullet_speed_multiplier,
-            }
-
+            next_level_id = self.level_id + 1
+            if any(level["id"] == next_level_id for level in levels_list):
+                self.next_scene_dict = {
+                    "scene_name": "Upgrades",
+                    "score": self.get_score(),
+                    "next_level_id": next_level_id,
+                    "bullet_fire_rate_divisor": (
+                        self.bullet_fire_rate_divisor
+                    ),
+                    "bullet_size_multiplier": (
+                        self.bullet_size_multiplier
+                    ),
+                    "bullet_speed_multiplier": (
+                        self.bullet_speed_multiplier
+                    ),
+                }
+            else:
+                print("win screen")
 
     def event_loop(self):
         # for loop through the event queue
