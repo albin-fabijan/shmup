@@ -74,5 +74,5 @@ class GameOver(Scene):
             "level_id": 1,
             "bullet_fire_rate_divisor": 1,
             "bullet_size_multiplier": 0.5,
-            "bullet_speed_multiplier": 1,
+            "bullet_speed_multiplier": 1.0,
         }

@@ -26,7 +26,7 @@ class Window:
             1,
             1,
             0.5,
-            0.5,
+            1,
         )
 
     def run_current_scene(self):
@@ -62,6 +62,7 @@ class Window:
                     self.current_scene = Upgrades(
                         self,
                         next_scene["score"],
+                        next_scene["next_level_id"],
                         next_scene["bullet_fire_rate_divisor"],
                         next_scene["bullet_size_multiplier"],
                         next_scene["bullet_speed_multiplier"],

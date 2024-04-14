@@ -8,6 +8,7 @@ class Upgrades(Scene):
         self,
         window,
         score,
+        next_level_id,
         bullet_fire_rate_divisor,
         bullet_size_multiplier,
         bullet_speed_multiplier
@@ -16,6 +17,7 @@ class Upgrades(Scene):
 
         self.window = window
         self.score = score
+        self.next_level_id = next_level_id
         self.bullet_fire_rate_divisor = bullet_fire_rate_divisor
         self.bullet_size_multiplier = bullet_size_multiplier
         self.bullet_speed_multiplier = bullet_speed_multiplier
@@ -115,7 +117,7 @@ class Upgrades(Scene):
     def next_scene(self):
         return {
             "scene_name": "Game",
-            "level_id": 2,
+            "level_id": self.next_level_id,
             "bullet_fire_rate_divisor": self.bullet_fire_rate_divisor,
             "bullet_size_multiplier": self.bullet_size_multiplier,
             "bullet_speed_multiplier": self.bullet_speed_multiplier,

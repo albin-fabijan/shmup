@@ -9,14 +9,15 @@ FPS = 30
 
 class Violet_Enemy(Enemy):
     def __init__(self):
-        super().__init__(2, 30)
+        super().__init__(0.5, 30)
         self.surf = pygame.image.load(Paths().select_sprite("violet_1.png")).convert_alpha()
         self.size = self.surf.get_size()
         self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
+        self.y = 220
         self.rect = self.image.get_rect(
             center=(                
                 random.randint(5, SCREEN_WIDTH-5),
-                220,
+                self.y,
             )
         )
         self.to_kill = False
@@ -33,7 +34,8 @@ class Violet_Enemy(Enemy):
 
     def update(self, bullets):
         self.create_bullet = False
-        self.rect.y += self.speed
+        self.y += self.speed
+        self.rect.y = self.y
         if (self.rect.y%100 == 0) :
             self.create_bullet = True
         if pygame.sprite.spritecollideany(self, bullets):

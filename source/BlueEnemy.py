@@ -14,7 +14,7 @@ FREQUENCY = 0.005
 
 class Blue_Enemy(Enemy):
     def __init__(self):
-        super().__init__(2, 30)
+        super().__init__(1, 30)
         self.surf = pygame.image.load(Paths().select_sprite("blue_1_right.png")).convert_alpha()
         self.size = self.surf.get_size()
         self.image = pygame.transform.scale(self.surf, (int(self.size[0]*2), int(self.size[1]*2)))
