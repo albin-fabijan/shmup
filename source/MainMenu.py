@@ -1,6 +1,8 @@
 import pygame
 import sys
 
+from Paths import Paths
+
 class MainMenu:
     def __init__(self):
         self.buttons = []
@@ -8,7 +10,7 @@ class MainMenu:
     def main(self):
 
         self.display_windows()
-        pygame.mixer.music.load("ost\\Moonlight Beach.mp3")
+        pygame.mixer.music.load("Moonlight Beach.mp3")
         pygame.mixer.music.play(-1)
         self.display_chaine()
 
@@ -23,10 +25,10 @@ class MainMenu:
 
     def display_chaine(self):
         self.display_background()
-        self.display_button("sprite\\button-game\\game01.png", 0.3, "game")
-        self.display_button("sprite\\button-option\\option01.png", 0.45, "option")
-        self.display_button("sprite\\button-leaderboard\\leaderboard01.png", 0.6, "leaderboard")
-        self.display_button("sprite\\button-back\\back01.png", 0.75, "back")
+        self.display_button("sprites/button-game/game01.png", 0.3, "game")
+        self.display_button("sprites/button-option/option01.png", 0.45, "option")
+        self.display_button("sprites/button-leaderboard/leaderboard01.png", 0.6, "leaderboard")
+        self.display_button("sprites/button-back/back01.png", 0.75, "back")
         self.display_book_button()
 
     def display_windows(self):
@@ -39,7 +41,7 @@ class MainMenu:
         self.clock = pygame.time.Clock()
 
     def display_background(self):
-        background = pygame.image.load("sprite\\background-menu.png")
+        background = pygame.image.load("sprites/background-menu.png")
         background = pygame.transform.scale(background, (self.screen.get_width(), self.screen.get_height()))
         self.screen.blit(background, (0, 0))
         pygame.display.flip()
@@ -57,7 +59,7 @@ class MainMenu:
         self.buttons.append((button_x, button_y, button_width_scaled, button_height_scaled, button_id))
 
     def display_book_button(self):
-        button_image = pygame.image.load("sprite\\book01.png")
+        button_image = pygame.image.load("sprites/book01.png")
         button_rect = button_image.get_rect()
         button_width_scaled = int(self.screen.get_width() * 0.12)
         button_height_scaled = int(button_rect.height * (button_width_scaled / button_rect.width))
@@ -86,9 +88,9 @@ class MainMenu:
                     break
 
     def animated_game_button(self):
-        animation_images = ["sprite\\button-game\\game01.png", "sprite\\button-game\\game02.png",
-                            "sprite\\button-game\\game03.png", "sprite\\button-game\\game04.png",
-                            "sprite\\button-game\\game05.png"]
+        animation_images = ["sprites/button-game/game01.png", "sprites/button-game/game02.png",
+                            "sprites/button-game/game03.png", "sprites/button-game/game04.png",
+                            "sprites/button-game/game05.png"]
 
         for image_path in animation_images:
             button_image = pygame.image.load(image_path)
@@ -103,9 +105,9 @@ class MainMenu:
             self.clock.tick(10)
 
     def animated_option_button(self):
-        animation_images = ["sprite\\button-option\\option01.png", "sprite\\button-option\\option02.png",
-                            "sprite\\button-option\\option03.png", "sprite\\button-option\\option04.png",
-                            "sprite\\button-option\\option05.png"]
+        animation_images = ["sprites/button-option/option01.png", "sprites/button-option/option02.png",
+                            "sprites/button-option/option03.png", "sprites/button-option/option04.png",
+                            "sprites/button-option/option05.png"]
 
         for image_path in animation_images:
             button_image = pygame.image.load(image_path)
@@ -120,9 +122,9 @@ class MainMenu:
             self.clock.tick(10)
 
     def animated_leaderboard_button(self):
-        animation_images = ["sprite\\button-leaderboard\\leaderboard01.png", "sprite\\button-leaderboard\\leaderboard02.png",
-                            "sprite\\button-leaderboard\\leaderboard03.png", "sprite\\button-leaderboard\\leaderboard04.png",
-                            "sprite\\button-leaderboard\\leaderboard05.png"]
+        animation_images = ["sprites/button-leaderboard/leaderboard01.png", "sprites/button-leaderboard/leaderboard02.png",
+                            "sprites/button-leaderboard/leaderboard03.png", "sprites/button-leaderboard/leaderboard04.png",
+                            "sprites/button-leaderboard/leaderboard05.png"]
 
         for image_path in animation_images:
             button_image = pygame.image.load(image_path)
@@ -137,9 +139,9 @@ class MainMenu:
             self.clock.tick(10)
 
     def animated_back_button(self):
-        animation_images = ["sprite\\button-back\\back01.png", "sprite\\button-back\\back02.png",
-                            "sprite\\button-back\\back03.png", "sprite\\button-back\\back04.png",
-                            "sprite\\button-back\\back05.png"]
+        animation_images = ["sprites/button-back/back01.png", "sprites/button-back/back02.png",
+                            "sprites/button-back/back03.png", "sprites/button-back/back04.png",
+                            "sprites/button-back/back05.png"]
 
         for image_path in animation_images:
             button_image = pygame.image.load(image_path)
@@ -154,9 +156,9 @@ class MainMenu:
             self.clock.tick(10)
 
     def animated_next_button(self):
-        animation_images = ["sprite\\button-next\\next01.png", "sprite\\button-next\\next02.png",
-                            "sprite\\button-next\\next03.png", "sprite\\button-next\\next04.png",
-                            "sprite\\button-next\\next05.png"]
+        animation_images = ["sprites/button-next/next01.png", "sprites/button-next/next02.png",
+                            "sprites/button-next/next03.png", "sprites/button-next/next04.png",
+                            "sprites/button-next/next05.png"]
 
         for image_path in animation_images:
             button_image = pygame.image.load(image_path)
@@ -171,7 +173,7 @@ class MainMenu:
             self.clock.tick(10)
 
     def book_display(self):
-        book_image = pygame.image.load("sprite\\book-animate\\1.png")
+        book_image = pygame.image.load("sprites/book-animate/1.png")
         book_rect = book_image.get_rect()
         book_width_scaled = int(self.screen.get_width() * 0.6)
         book_height_scaled = int(book_rect.height * (book_width_scaled / book_rect.width))
@@ -206,18 +208,22 @@ class MainMenu:
     
     def chaine_hint(self):
         self.book_display()
-        self.display_button("sprite\\button-next\\next01.png", 0.75, "next")
+        self.display_button("sprites/button-next/next01.png", 0.75, "next")
         self.clicked_next(1)
 
         self.display_background()
         self.display_book_button()
         self.book_display()
-        self.display_button("sprite\\button-next\\next01.png", 0.75, "next")
+        self.display_button("sprites/button-next/next01.png", 0.75, "next")
         self.clicked_next(1)
 
         self.display_background()
         self.display_book_button()
         self.book_display()
-        self.display_button("sprite\\button-back\\back01.png", 0.75, "next")
+        self.display_button("sprites/button-back/back01.png", 0.75, "next")
         self.clicked_next(2)
         self.display_chaine()
+
+
+if __name__ == "__main__":
+    MainMenu().main()
