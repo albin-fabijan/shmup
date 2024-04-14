@@ -115,8 +115,7 @@ class Upgrades(Scene):
     def next_scene(self):
         return {
             "scene_name": "Game",
-            "boat_number": 4,
-            "enemy_types": ["W", "B", "Y"],
+            "level_id": 2,
             "bullet_fire_rate_divisor": self.bullet_fire_rate_divisor,
             "bullet_size_multiplier": self.bullet_size_multiplier,
             "bullet_speed_multiplier": self.bullet_speed_multiplier,

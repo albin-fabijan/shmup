@@ -23,8 +23,7 @@ class Window:
 
         self.current_scene = Game(
             self,
-            3,
-            ["W", "W", "W", "W"],
+            1,
             1,
             0.5,
             0.5,
@@ -52,8 +51,7 @@ class Window:
                 case "Game":
                     self.current_scene = Game(
                             self,
-                            next_scene["boat_number"],
-                            next_scene["enemy_types"],
+                            next_scene["level_id"],
                             next_scene["bullet_fire_rate_divisor"],
                             next_scene["bullet_size_multiplier"],
                             next_scene["bullet_speed_multiplier"],

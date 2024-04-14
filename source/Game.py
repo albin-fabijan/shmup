@@ -13,6 +13,7 @@ from .RedEnemy import Red_Enemy
 from .Ship import Ship
 from .Level import Level
 from .EnemyBullet import Enemy_Bullet
+from .levels_list import levels_list
 
 from pygame.locals import (
     K_ESCAPE,
@@ -24,8 +25,7 @@ class Game(Scene):
     def __init__(
         self,
         window,
-        boat_number,
-        enemy_types,
+        level_id,
         bullet_fire_rate_divisor,
         bullet_size_multiplier,
         bullet_speed_multiplier,
@@ -33,8 +33,7 @@ class Game(Scene):
         super().__init__()
         self.window = window
 
-        self.boat_number = boat_number
-        self.enemy_types = enemy_types
+        self.level_id = level_id
 
         self.bullet_fire_rate_divisor = bullet_fire_rate_divisor
         self.bullet_size_multiplier = bullet_size_multiplier
@@ -73,8 +72,9 @@ class Game(Scene):
         self.player = Player()
 
         self.ship_list = []
-        for i in range(self.boat_number):
-            newL = self.enemy_types
+        boat_number, enemies = self.get_level_data()
+        for i in range(boat_number):
+            newL = enemies
             new_ship = Ship(newL)
             self.ship_list.append(new_ship)
 
@@ -316,3 +316,11 @@ class Game(Scene):
 
     def level_is_finished(self):
         return self.level.ship_count == 0 and self.enemy_count <= 0
+
+    def get_level_data(self):
+        for level in levels_list:
+            if level["id"] != self.level_id:
+                continue
+            boat_number = level["boat_number"]
+            enemies = level["enemies"]
+            return boat_number, enemies

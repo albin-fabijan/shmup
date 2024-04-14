@@ -71,8 +71,7 @@ class GameOver(Scene):
     def next_scene(self):
         return {
             "scene_name": "Game",
-            "boat_number": 4,
-            "enemy_types": ["W", "B", "Y"],
+            "level_id": 1,
             "bullet_fire_rate_divisor": 1,
             "bullet_size_multiplier": 0.5,
             "bullet_speed_multiplier": 1,
