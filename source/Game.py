@@ -243,38 +243,39 @@ class Game(Scene):
                 for ship in self.ships :
                     if (ship.enemy_count > 0 and not ship.move) :
                         letter = ship.enemies[-ship.enemy_count]
-                        if (letter == "W") :
-                            new_enemy = White_Enemy()
-                            self.enemies.add(new_enemy)
-                            self.all_sprites.add(new_enemy)
-                            self.enemy_count += 1
-                        elif (letter == "R") :
-                            new_enemy = Red_Enemy()
-                            self.enemies.add(new_enemy)
-                            self.all_sprites.add(new_enemy)
-                            self.enemy_count += 1
-                        elif (letter == "Y") :
-                            new_enemy = Yellow_Enemy()
-                            self.enemies.add(new_enemy)
-                            self.yellows.add(new_enemy)
-                            self.all_sprites.add(new_enemy)
-                            self.enemy_count += 1
-                        elif (letter == "G") :
-                            new_enemy = Green_Enemy()
-                            self.enemies.add(new_enemy)
-                            self.all_sprites.add(new_enemy)
-                            self.enemy_count += 1
-                        elif (letter == "B") :
-                            new_enemy = Blue_Enemy()
-                            self.enemies.add(new_enemy)
-                            self.all_sprites.add(new_enemy)
-                            self.enemy_count += 1
-                        elif (letter == "V") :
-                            new_enemy = Violet_Enemy()
-                            self.enemies.add(new_enemy)
-                            self.violets.add(new_enemy)
-                            self.all_sprites.add(new_enemy)
-                            self.enemy_count += 1
+                        match letter:
+                            case "W":
+                                new_enemy = White_Enemy()
+                                self.enemies.add(new_enemy)
+                                self.all_sprites.add(new_enemy)
+                                self.enemy_count += 1
+                            case "R":
+                                new_enemy = Red_Enemy()
+                                self.enemies.add(new_enemy)
+                                self.all_sprites.add(new_enemy)
+                                self.enemy_count += 1
+                            case "Y":
+                                new_enemy = Yellow_Enemy()
+                                self.enemies.add(new_enemy)
+                                self.yellows.add(new_enemy)
+                                self.all_sprites.add(new_enemy)
+                                self.enemy_count += 1
+                            case "G":
+                                new_enemy = Green_Enemy()
+                                self.enemies.add(new_enemy)
+                                self.all_sprites.add(new_enemy)
+                                self.enemy_count += 1
+                            case "B":
+                                new_enemy = Blue_Enemy()
+                                self.enemies.add(new_enemy)
+                                self.all_sprites.add(new_enemy)
+                                self.enemy_count += 1
+                            case "V":
+                                new_enemy = Violet_Enemy()
+                                self.enemies.add(new_enemy)
+                                self.violets.add(new_enemy)
+                                self.all_sprites.add(new_enemy)
+                                self.enemy_count += 1
                         ship.enemy_count -= 1
 
             elif event.type == self.ADDBULLET:
