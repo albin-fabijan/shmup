@@ -14,6 +14,7 @@ from .Ship import Ship
 from .Level import Level
 from .EnemyBullet import Enemy_Bullet
 from .levels_list import levels_list
+from .Heart import Heart
 
 from pygame.locals import (
     K_ESCAPE,
@@ -96,9 +97,18 @@ class Game(Scene):
         self.bullets = pygame.sprite.Group()
         self.enemy_bullets = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
-        self.player_group.add(self.player) 
+        self.player_group.add(self.player)
+        self.hearts = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
+
+        self.hearts_sprites = []
+
+        for i in range(self.player.max_health) :
+            heart = Heart(i)
+            self.hearts.add(heart)
+            self.hearts_sprites.append(heart)
+            self.all_sprites.add(heart)
 
         # Variable to keep the main loop running
         self.running = True
@@ -172,6 +182,7 @@ class Game(Scene):
                 if (not self.player.invincible) :
                     self.player.health -= 1
                     self.hits += 1
+                    self.hearts_sprites[-self.hits].update(True)
                     self.player.hurt = False
                     self.player.invincible = True
                 enemy.kill()

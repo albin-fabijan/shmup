@@ -35,27 +35,47 @@ class Upgrades(Scene):
         )
 
         BUTTON_DIMENSIONS = 100
-        self.fire_rate_button = pygame.Rect(
-            (
-                self.window.SCREEN_WIDTH * 0.33 - (BUTTON_DIMENSIONS // 2),
-                self.window.SCREEN_HEIGHT * 0.66 - (BUTTON_DIMENSIONS // 2)
+        sprite = pygame.sprite.Sprite()
+        sprite.__init__()
+        sprite.surf = pygame.image.load(Paths().select_sprite("fire-rate-power-up.png")).convert_alpha()
+        sprite.size = sprite.surf.get_size()
+        sprite.image = pygame.transform.scale(sprite.surf, (int(sprite.size[0]*2), int(sprite.size[1]*2)))
+        sprite.rect = sprite.image.get_rect(
+            center=(
+                self.window.SCREEN_WIDTH * 0.33,
+                self.window.SCREEN_HEIGHT * 0.66
             ),
-            (BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
+            size=(BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
         )
-        self.size_button = pygame.Rect(
-            (
-                self.window.SCREEN_WIDTH * 0.5 - (BUTTON_DIMENSIONS // 2),
-                self.window.SCREEN_HEIGHT * 0.66 - (BUTTON_DIMENSIONS // 2)
+        self.fire_rate_button = sprite
+
+        sprite = pygame.sprite.Sprite()
+        sprite.__init__()
+        sprite.surf = pygame.image.load(Paths().select_sprite("bullet-size-power-up.png")).convert_alpha()
+        sprite.size = sprite.surf.get_size()
+        sprite.image = pygame.transform.scale(sprite.surf, (int(sprite.size[0]*2), int(sprite.size[1]*2)))
+        sprite.rect = sprite.image.get_rect(
+            center=(
+                self.window.SCREEN_WIDTH * 0.5,
+                self.window.SCREEN_HEIGHT * 0.66
             ),
-            (BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
+            size=(BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
         )
-        self.speed_button = pygame.Rect(
-            (
-                self.window.SCREEN_WIDTH * 0.66 - (BUTTON_DIMENSIONS // 2),
-                self.window.SCREEN_HEIGHT * 0.66 - (BUTTON_DIMENSIONS // 2)
+        self.size_button = sprite
+
+        sprite = pygame.sprite.Sprite()
+        sprite.__init__()
+        sprite.surf = pygame.image.load(Paths().select_sprite("bullet-speed-power-up.png")).convert_alpha()
+        sprite.size = sprite.surf.get_size()
+        sprite.image = pygame.transform.scale(sprite.surf, (int(sprite.size[0]*2), int(sprite.size[1]*2)))
+        sprite.rect = sprite.image.get_rect(
+            center=(
+                self.window.SCREEN_WIDTH * 0.66,
+                self.window.SCREEN_HEIGHT * 0.66
             ),
-            (BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
+            size=(BUTTON_DIMENSIONS, BUTTON_DIMENSIONS)
         )
+        self.speed_button = sprite
 
         self.font = pygame.font.Font(None, 48)
         self.score_text_surface = self.font.render(
@@ -74,13 +94,13 @@ class Upgrades(Scene):
                 self.running = False
                 self.window.running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.fire_rate_button.collidepoint(event.pos):
+                if self.fire_rate_button.rect.collidepoint(event.pos):
                     self.bullet_fire_rate_divisor += 0.5
                     self.running = False
-                elif self.size_button.collidepoint(event.pos):
+                elif self.size_button.rect.collidepoint(event.pos):
                     self.bullet_size_multiplier += 0.5
                     self.running = False
-                elif self.speed_button.collidepoint(event.pos):
+                elif self.speed_button.rect.collidepoint(event.pos):
                     self.bullet_speed_multiplier += 0.5
                     self.running = False
 
@@ -90,21 +110,9 @@ class Upgrades(Scene):
 
         self.window.screen.blit(self.background, (0,0))
 
-        pygame.draw.rect(
-            self.window.screen,
-            (255, 0, 0),
-            self.fire_rate_button
-        )
-        pygame.draw.rect(
-            self.window.screen,
-            (0, 255, 0),
-            self.size_button
-        )
-        pygame.draw.rect(
-            self.window.screen,
-            (0, 0, 255),
-            self.speed_button
-        )
+        self.window.screen.blit(self.fire_rate_button.surf, self.fire_rate_button.rect.center)
+        self.window.screen.blit(self.size_button.surf, self.size_button.rect.center)
+        self.window.screen.blit(self.speed_button.surf, self.speed_button.rect.center)
 
         self.window.screen.blit(
             self.score_text_surface,

@@ -21,8 +21,14 @@ class Player(pygame.sprite.Sprite):
         self.to_kill = False
         self.shoot = False
         self.health = 3
+        self.max_health = 3
         self.hurt = False
         self.invincible = False
+        self.frame = 0
+        self.sprites = {
+            (0, 4): 128,
+            (5, 9): 30,
+        }
 
     def update(self, pressed_keys, enemy_bullets):
         if pressed_keys[K_LEFT]:
@@ -48,3 +54,15 @@ class Player(pygame.sprite.Sprite):
             print("damage")
         if (self.health <= 0) :
             self.to_kill = True
+
+        self.frame = (self.frame + 1) % 10
+
+        if (self.invincible) :
+            self.image.set_alpha(self.change_sprite_depending_on_frame(self.sprites))
+        else :
+            self.image.set_alpha(255)
+
+    def change_sprite_depending_on_frame(self, sprites):
+        for frame_range, sprite in sprites.items():
+            if frame_range[0] <= self.frame <= frame_range[1]:
+                return sprite
