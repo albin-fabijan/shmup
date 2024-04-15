@@ -76,13 +76,14 @@ class screen_menu:
                     self.animated_game_button()
                 elif button_id == "option":
                     self.animated_option_button()
+                    self.chaine_hint_option()
                 elif button_id == "leaderboard":
                     self.animated_leaderboard_button()
                 elif button_id == "back":
                     self.animated_back_button()
                     quit()
                 elif button_id == "book":
-                    self.chaine_hint()
+                    self.chaine_hint_book()
                     break
 
     def animated_game_button(self):
@@ -204,9 +205,10 @@ class screen_menu:
                                         inc = False
                                         break
     
-    def chaine_hint(self):
+    def chaine_hint_book(self):
         self.book_display()
         self.display_button("sprite\\button-next\\next01.png", 0.75, "next")
+        
         self.clicked_next(1)
 
         self.display_background()
@@ -220,6 +222,35 @@ class screen_menu:
         self.book_display()
         self.display_button("sprite\\button-back\\back01.png", 0.75, "next")
         self.clicked_next(2)
+        self.display_chaine()
+    
+    def chaine_hint_option(self):
+        
+        self.display_background()
+        self.book_display()
+        self.display_button("sprite\\button-back\\back01.png", 0.75, "back")
+        
+
+        inc = True
+        while inc == True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        pos = pygame.mouse.get_pos()
+                        for button in self.buttons:
+                            button_x, button_y, button_width, button_height, button_id = button
+                            if button_x <= pos[0] <= button_x + button_width and button_y <= pos[1] <= button_y + button_height:
+                                if button_id == "back":
+                                        self.animated_next_button()
+                                        inc = False
+                                        break
+
+
+
+
         self.display_chaine()
 
 
