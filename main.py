@@ -1,4 +1,4 @@
-from source.Window import Window
+from source.screen_menue import screen_menu
 
-window = Window()
-window.run_current_scene()
+game = screen_menu()
+game.main()

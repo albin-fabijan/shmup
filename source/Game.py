@@ -71,6 +71,11 @@ class Game(Scene):
         # Instantiate player. Right now, this is just a rectangle.
         self.player = Player()
 
+        music = self.get_level_music()
+
+        pygame.mixer.music.load(Paths().select_ost(music))
+        pygame.mixer.music.play(-1)
+
         self.ship_list = []
         boat_number, enemies = self.get_level_data()
         for i in range(boat_number):
@@ -78,7 +83,7 @@ class Game(Scene):
             new_ship = Ship(newL)
             self.ship_list.append(new_ship)
 
-        self.level = Level(self.ship_list)
+        self.level = Level(self.ship_list, music)
 
         # Create groups to hold enemy sprites and all sprites
         # - enemies is used for collision detection and position updates
@@ -203,6 +208,7 @@ class Game(Scene):
 
         elif self.level_is_finished():
             self.player.kill()
+            pygame.mixer.music.fadeout(1000)
             self.win = True
             self.running = False
             next_level_id = self.level_id + 1
@@ -335,3 +341,10 @@ class Game(Scene):
             boat_number = level["boat_number"]
             enemies = level["enemies"]
             return boat_number, enemies
+        
+    def get_level_music(self) :
+        for level in levels_list:
+            if level["id"] != self.level_id:
+                continue
+            music = level["music"]
+            return music
